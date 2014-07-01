@@ -4,7 +4,7 @@ background-image:url(http://all-for-design.com/portfolio/wp-content/themes/afdfo
 ;}
 body {
 background-color: #cac7b9;
-	background:url(http://all-for-design.com/portfolio/wp-content/themes/afdfolio/img/texture.gif);}
+	background-image:url(https://pengyou12.github.io/img/m2w500hq85lt_original_4plk_4e3f000167351191.jpg);}
 div#header1 {
 	background-color:666699;
 	margin:10px;}
@@ -14,17 +14,18 @@ div#header2{
 	margin:10px;
 	}
 .aside{
+	background-image:url(https://pengyou12.github.io/asidebackground.PNG);
+	color:black;
 	padding:10px;
 	margin: 10px;
-	background-color:#FFFFFF;
+	/*background-color:#CCCCFF;*/
 	width:180px;
 	float:right;
 	clear:both;
 	}
-	
 .allContent{
 	color:black;
-	background-color:#FFFFFF;
+	background-color:#CCCCFF;
 	position:absolute;
 	right:250px;
 	}
@@ -36,7 +37,7 @@ center{
 	}
 .body {
 	padding:10px;
-	background-color:#FFFFFF;
+	/*background-color:#CCCCFF;*/
 	margin-right:220px;
 	margin-left:10px;
 	margin-top:20px;
