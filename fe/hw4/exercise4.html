@@ -53,8 +53,8 @@ function changeImageOnFocus(changeToImage)
 {
 	alert('23333');
 	var tempLi = $('li');
-	tempLi[currentImage].style.display = 'none';
-	tempLi[changeImageOnFucos].style.display = 'block';
+	tempLi[currentImage-1].style.display = 'none';
+	tempLi[changeImageOnFucos-1].style.display = 'block';
 	currentImage = changeToImage;
 }
 
