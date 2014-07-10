@@ -81,11 +81,8 @@ function myjs(){
 			else if(i != 10)myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:none"><img src="'+b+'" "></li>'));
 			else myDiv1.append($('<li onclick="changeImageOnFocus('+1+');" style="display:none"><img src="'+b+'"></li>'));
 		}
-		 $('img').css('text-align','center');
-		 $('img').css('vertical-align','middle');
-		 $('img').css('display','block');
-		  $('img').css('align','absmiddle');
-    }
+		 $('img').css('margin-left','10%');
+		 $('img').css('margin-right','10%')		 
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
   }
   	xmlhttp.open("GET","http://pengyou12.github.io/fe/hw4/imageList2.js",true);
