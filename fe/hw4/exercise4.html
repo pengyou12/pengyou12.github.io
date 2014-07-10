@@ -56,8 +56,6 @@ function myjs(){
 	{// code for IE6, IE5
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
-	xmlhttp.open("GET","http://pengyou12.github.io/imagePlay.js",true);
-	xmlhttp.send();
 	xmlhttp.onreadystatechange=function()
 	{
 	if (xmlhttp.readyState==4 && xmlhttp.status==200)
@@ -65,14 +63,14 @@ function myjs(){
 		document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
     }
   }
-xmlhttp.open("GET","test1.txt",true);
-xmlhttp.send();
+  	xmlhttp.open("GET","http://pengyou12.github.io/fe/hw4/imageList.js",true);
+	xmlhttp.send();
 }
 </script>
 </head>
 <title>我本楚狂人，凤歌笑孔丘
 </title>
-<body onload=myjs()>
+<body onload="myjs();">
 <div id="header1">
 <h1>
 	我本楚狂人，凤歌笑孔丘
@@ -84,6 +82,6 @@ xmlhttp.send();
 	<a href="https://pengyou12.github.com/imgindex.html" style="text-decoration:none">相册</a>
 	<a href="https://pengyou12.github.com/aboutme.html" style="text-decoration:none">关于我 </a>
 </div>
-<div id=myDiv'> </div>
+<div id=myDiv'> 1234</div>
 </body>
 </html>
