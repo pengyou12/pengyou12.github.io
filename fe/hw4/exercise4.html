@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
+<script type="text/javascript" src="http://learn.cic.tsinghua.edu.cn:80/res/common/js/library/jquery/jquery-1.7.2.min.js"></script>
 <style type="text/css">
 h1{
 background-image:url(http://all-for-design.com/portfolio/wp-content/themes/afdfolio/img/bgimg.gif)
@@ -60,7 +61,12 @@ function myjs(){
 	{
 	if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	{
-		document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+		eval('image = '+ xmlhttp.responseText);
+		var myDiv1 = $('#myDiv');
+		for(var i = 0; i <= 8;i++)
+		{
+			myDiv1.prepend('<li><img scr='+image[i]+'></li>');
+		}
     }
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
   }
@@ -83,6 +89,6 @@ function myjs(){
 	<a href="https://pengyou12.github.com/imgindex.html" style=th"text-decoration:none">相册</a>
 	<a href="https://pengyou12.github.com/aboutme.html" style="text-decoration:none">关于我 </a>
 </div>
-<div id='myDiv'> 1234</div>
+<div id='myDiv'></div>
 </body>
 </html>
