@@ -1,7 +1,9 @@
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
-<script type="text/javascript" src="http://learn.cic.tsinghua.edu.cn:80/res/common/js/library/jquery/jquery-1.7.2.min.js"></script>
+<script src="http://code.jquery.com/jquery-2.0.3.min.js" type="text/javascript"></script>
+//<script src="animo.js" type="text/javascript"></script>
+//<link href="animate+animo.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 h1{
 background-image:url(http://all-for-design.com/portfolio/wp-content/themes/afdfolio/img/bgimg.gif)
@@ -46,26 +48,17 @@ center{
 	margin-top:20px;
 }
 
-@-webkit-keyframes myfirst
-{
-0%   {background: red; left:0px; top:0px;}
-25%  {background: yellow; left:200px; top:0px;}
-50%  {background: blue; left:200px; top:200px;}
-75%  {background: green; left:0px; top:200px;}
-100% {background: red; left:0px; top:0px;}
-}
 
 </style>
 <script type="text/javascript">
 currentImage = 1;//下标从1开始
 function changeImageOnFocus(changeToImage)
 {
-	alert('23231');
 	var tempLi = $('li');
-	tempLi[currentImage-1].css('-webkit-animation','myfirst 5s');
-	//window.setTimeout("",5000); 
-	tempLi[currentImage-1].style.display = 'none';
-	tempLi[changeToImage-1].style.display = 'block';
+	$(tempLi[currentImage-1]).fadeOut();
+	//tempLi[currentImage-1].style.display = 'none';
+	//tempLi[changeToImage-1].style.display = 'block';
+	$(tempLi[changeToImage-1]).fadeIn();
 	currentImage = changeToImage;
 }
 
