@@ -82,6 +82,7 @@ function myjs(){
 			else myDiv1.append($('<li onclick="changeImageOnFocus('+1+');" style="display:none"><img src="'+b+'"></li>'));
 		}
 		 $('img').css('text-align','center');
+		 $('img').css('vertical-align','middle');
     }
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
   }
