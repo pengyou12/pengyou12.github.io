@@ -65,7 +65,8 @@ function myjs(){
 		var myDiv1 = $('#myDiv');
 		for(var i = 0; i <= 8;i++)
 		{
-			myDiv1.prepend('<li><img scr='+image.+'image'+i+'></li>');
+			eval('b = image.image'+i);
+			myDiv1.prepend($('<li><img src="'+b+'"></li>'));
 		}
     }
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
