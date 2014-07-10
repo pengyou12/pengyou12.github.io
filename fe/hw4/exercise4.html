@@ -82,7 +82,8 @@ function myjs(){
 			else myDiv1.append($('<li onclick="changeImageOnFocus('+1+');" style="display:none"><img src="'+b+'"></li>'));
 		}
 		 $('img').css('margin-left','10%');
-		 $('img').css('margin-right','10%')		 
+		 $('img').css('margin-right','10%');	
+	}		 
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
   }
   	xmlhttp.open("GET","http://pengyou12.github.io/fe/hw4/imageList2.js",true);
