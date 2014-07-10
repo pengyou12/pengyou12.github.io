@@ -63,7 +63,7 @@ function myjs(){
 	{
 		eval('image = '+ xmlhttp.responseText);
 		var myDiv1 = $('#myDiv');
-		for(var i = 0; i <= 8;i++)
+		for(var i = 1; i <= 9;i++)
 		{
 			eval('b = image.image'+i);
 			myDiv1.prepend($('<li><img src="'+b+'"></li>'));
