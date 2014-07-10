@@ -45,9 +45,7 @@ center{
 	margin-left:10px;
 	margin-top:20px;
 }
-.img{
-margin:0 auto;/*这是是水平居中*/
-}
+
 </style>
 <script type="text/javascript">
 currentImage = 1;//下标从1开始
@@ -83,6 +81,7 @@ function myjs(){
 			else if(i != 10)myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:none"><img src="'+b+'" "></li>'));
 			else myDiv1.append($('<li onclick="changeImageOnFocus('+1+');" style="display:none"><img src="'+b+'></li>'));
 		}
+		 $('.img').css('margin','auto');
     }
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
   }
