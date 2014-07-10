@@ -53,7 +53,7 @@ function changeImageOnFocus(changeToImage)
 {
 	var tempLi = $('li');
 	tempLi[currentImage-1].style.display = 'none';
-	tempLi[changeToImage-1].style = 'display:table-cell;vertical-align:middle;text-align:center;';
+	tempLi[changeToImage-1].css('style','display:table-cell;vertical-align:middle;text-align:center;');
 	currentImage = changeToImage;
 }
 
