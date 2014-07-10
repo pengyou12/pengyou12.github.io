@@ -62,6 +62,7 @@ function myjs(){
 	{
 		document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
     }
+	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
   }
   	xmlhttp.open("GET","http://pengyou12.github.io/fe/hw4/imageList.js",true);
 	xmlhttp.send();
