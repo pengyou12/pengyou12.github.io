@@ -77,9 +77,9 @@ function myjs(){
 		{
 			eval('b = image.image'+i);
 			if(i == 1)
-			myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:block"><img src="'+b+'" width="100%" height="100%"></li>'));
-			else if(i != 9)myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:none"><img src="'+b+'" width="100%" height="100%"></li>'));
-			else myDiv1.append($('<li onclick="changeImageOnFocus('+1+');" style="display:none"><img src="'+b+'" width="100%" height="100%"></li>'));
+			myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:block"><img src="'+b+'" width="100%" height="80%"></li>'));
+			else if(i != 9)myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:none"><img src="'+b+'" width="100%" height="80%"></li>'));
+			else myDiv1.append($('<li onclick="changeImageOnFocus('+1+');" style="display:none"><img src="'+b+'" width="100%" height="80%"></li>'));
 		}
     }
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
