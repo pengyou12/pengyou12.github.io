@@ -66,7 +66,9 @@ function myjs(){
 		for(var i = 1; i <= 9;i++)
 		{
 			eval('b = image.image'+i);
-			myDiv1.prepend($('<li><img src="'+b+'"></li>'));
+			if(i == 1)
+			myDiv1.prepend($('<li style="display:block"><img src="'+b+'"></li>'));
+			else myDiv1.prepend($('<li style="display:none"><img src="'+b+'"></li>'));
 		}
     }
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
