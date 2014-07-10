@@ -46,7 +46,7 @@ center{
 	margin-top:20px;
 }
 
-@keyframes myfirst
+@-webkit-keyframes myfirst
 {
 0%   {background: red; left:0px; top:0px;}
 25%  {background: yellow; left:200px; top:0px;}
@@ -61,7 +61,7 @@ currentImage = 1;//下标从1开始
 function changeImageOnFocus(changeToImage)
 {
 	var tempLi = $('li');
-	tempLi[currentImage-1].css('animation','myfirst 5s');
+	tempLi[currentImage-1].css('-webkit-animation','myfirst 5s');
 	window.setTimeout("",5000); 
 	tempLi[currentImage-1].style.display = 'none';
 	tempLi[changeToImage-1].style.display = 'block';
