@@ -78,8 +78,8 @@ function myjs(){
 		{
 			eval('b = image.image'+i);
 			if(i == 1)
-			myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');",style="display:block"><img src="'+b+'"></li>'));
-			else myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');",style="display:none"><img src="'+b+'"></li>'));
+			myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:block"><img src="'+b+'"></li>'));
+			else myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:none"><img src="'+b+'"></li>'));
 		}
     }
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
