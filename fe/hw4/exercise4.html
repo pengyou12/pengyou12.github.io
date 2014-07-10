@@ -49,11 +49,11 @@ center{
 </style>
 <script type="text/javascript">
 currentImage = 1;//下标从1开始
-function changeImageOnFucos(changeToImage)
+function changeImageOnFocus(changeToImage)
 {
-	var tempIi = $('.li');
-	tempIi[currentImage].style.display = 'none';
-	tempIi[changeImageOnFucos].style.display = 'block';
+	var tempLi = $('li');
+	tempLi[currentImage].style.display = 'none';
+	tempLi[changeImageOnFucos].style.display = 'block';
 	currentImage = changeToImage;
 }
 
@@ -77,8 +77,8 @@ function myjs(){
 		{
 			eval('b = image.image'+i);
 			if(i == 1)
-			myDiv1.append($('<li style="display:block",onclick="changeImageOnFucos('+(i+1)+');"><img src="'+b+'"></li>'));
-			else myDiv1.append($('<li style="display:none",onclick="changeImageOnFucos('+(i+1)+');"><img src="'+b+'"></li>'));
+			myDiv1.append($('<li style="display:block",onclick="changeImageOnFocus('+(i+1)+');"><img src="'+b+'"></li>'));
+			else myDiv1.append($('<li style="display:none",onclick="changeImageOnFocus('+(i+1)+');"><img src="'+b+'"></li>'));
 		}
     }
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
