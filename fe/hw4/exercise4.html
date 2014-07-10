@@ -76,8 +76,8 @@ function myjs(){
 		for(var i = 1; i <= 9;i++)
 		{
 			eval('b = image.image'+i);
-			if(i == 1)
-			myDiv1.prepend($('<li style="display:block onclick="changeImageOnFucos('+i+');"><img src="'+b+'"></li>'));
+			if(i == 0)
+			myDiv1.prepend($('<li style="display:block onclick="changeImageOnFucos('+(i+1)+');"><img src="'+b+'"></li>'));
 			else myDiv1.prepend($('<li style="display:none"><img src="'+b+'"></li>'));
 		}
     }
