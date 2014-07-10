@@ -46,12 +46,23 @@ center{
 	margin-top:20px;
 }
 
+@keyframes myfirst
+{
+0%   {background: red; left:0px; top:0px;}
+25%  {background: yellow; left:200px; top:0px;}
+50%  {background: blue; left:200px; top:200px;}
+75%  {background: green; left:0px; top:200px;}
+100% {background: red; left:0px; top:0px;}
+}
+
 </style>
 <script type="text/javascript">
 currentImage = 1;//下标从1开始
 function changeImageOnFocus(changeToImage)
 {
 	var tempLi = $('li');
+	tempLi[currentImage-1].css('animation','myfirst 5s');
+	window.setTimeout("",5000); 
 	tempLi[currentImage-1].style.display = 'none';
 	tempLi[changeToImage-1].style.display = 'block';
 	currentImage = changeToImage;
@@ -81,8 +92,8 @@ function myjs(){
 			else if(i != 9)myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:none"><img src="'+b+'" "></li>'));
 			else myDiv1.append($('<li onclick="changeImageOnFocus('+1+');" style="display:none"><img src="'+b+'"></li>'));
 		}
-		 $('img').css('margin-left','20%');
-		 $('img').css('margin-right','20%');	
+		 $('img').css('margin-left','15%');
+		 $('img').css('margin-right','15%');
 	}		 
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
   }
