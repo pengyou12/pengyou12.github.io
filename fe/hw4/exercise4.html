@@ -45,8 +45,18 @@ center{
 	margin-left:10px;
 	margin-top:20px;
 }
+
 </style>
 <script type="text/javascript">
+currentImage = 0;//下标从0开始
+function changeImageOnFucos(changeToImage)
+{
+	var tempIi = $('.li');
+	tempIi[currentImage].style.display = 'none';
+	tempIi[changeImageOnFucos].style.display = 'block';
+	currentImage = changeToImage;
+}
+
 function myjs(){
 	var xmlhttp;
 	if (window.XMLHttpRequest)
@@ -67,7 +77,7 @@ function myjs(){
 		{
 			eval('b = image.image'+i);
 			if(i == 1)
-			myDiv1.prepend($('<li style="display:block"><img src="'+b+'"></li>'));
+			myDiv1.prepend($('<li style="display:block onclick="changeImageOnFucos('+i+');"><img src="'+b+'"></li>'));
 			else myDiv1.prepend($('<li style="display:none"><img src="'+b+'"></li>'));
 		}
     }
