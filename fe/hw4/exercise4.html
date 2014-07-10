@@ -77,8 +77,8 @@ function myjs(){
 		{
 			eval('b = image.image'+i);
 			if(i == 0)
-			myDiv1.prepend($('<li style="display:block onclick="changeImageOnFucos('+(i+1)+');"><img src="'+b+'"></li>'));
-			else myDiv1.prepend($('<li style="display:none"><img src="'+b+'"></li>'));
+			myDiv1.prepend($('<li style="display:block",onclick="changeImageOnFucos('+(i+1)+');"><img src="'+b+'"></li>'));
+			else myDiv1.prepend($('<li style="display:none",onclick="changeImageOnFucos('+(i+1)+');"><img src="'+b+'"></li>'));
 		}
     }
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
