@@ -60,6 +60,7 @@ function myjs(){
 	{
 	if (xmlhttp.readyState==4 && xmlhttp.status==200)
 	{
+		alert('succes');
 		document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
     }
 	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
