@@ -81,10 +81,11 @@ function myjs(){
 		for(var i = 1; i <= 9;i++)
 		{
 			eval('b = image.image'+i);
+			eval('c = image.text'+i);
 			if(i == 1)
-			myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:block"><img src="'+b+'" ></li>'));
-			else if(i != 9)myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:none"><img src="'+b+'" "></li>'));
-			else myDiv1.append($('<li onclick="changeImageOnFocus('+1+');" style="display:none"><img src="'+b+'"></li>'));
+			myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:block"><img src="'+b+'" ><p>'+c+'</p></li>'));
+			else if(i != 9)myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:none"><img src="'+b+'" "><p>'+c+'</p></li>'));
+			else myDiv1.append($('<li onclick="changeImageOnFocus('+1+');" style="display:none"><img src="'+b+'"><p>'+c+'</p></li>'));
 		}
 		 $('img').css('margin-left','15%');
 		 $('img').css('margin-right','15%');
