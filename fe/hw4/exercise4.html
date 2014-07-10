@@ -53,7 +53,7 @@ function changeImageOnFocus(changeToImage)
 {
 	var tempLi = $('li');
 	tempLi[currentImage-1].style.display = 'none';
-	tempLi[changeToImage-1].style.display = 'block';
+	tempLi[changeToImage-1].style = 'display:table-cell;vertical-align:middle;text-align:center;';
 	currentImage = changeToImage;
 }
 
@@ -77,7 +77,7 @@ function myjs(){
 		{
 			eval('b = image.image'+i);
 			if(i == 1)
-			myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:block"><img src="'+b+'" ></li>'));
+			myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style=" display:table-cell;vertical-align:middle;text-align:center;"><img src="'+b+'" ></li>'));
 			else if(i != 10)myDiv1.append($('<li onclick="changeImageOnFocus('+(i+1)+');" style="display:none"><img src="'+b+'" "></li>'));
 			else myDiv1.append($('<li onclick="changeImageOnFocus('+1+');" style="display:none"><img src="'+b+'" ></li>'));
 		}
