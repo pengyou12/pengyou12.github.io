@@ -189,6 +189,6 @@ function myjs(){
 	//xmlhttp.open("GET","imageList2.js",true);
 	xmlhttp.send();
 	preImage = currentImage;
-	t2 = window.setInterval("timeChange();",10000);//定时器跳转
+	t2 = window.setInterval("timeChange();",5000);//定时器跳转
 
 }
