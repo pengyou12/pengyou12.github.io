@@ -1,0 +1,311 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-2.0.3.min.js" type="text/javascript"></script>
+<style type="text/css">
+
+@-webkit-keyframes myfirst /* Safari 和 Chrome */
+{
+0%   {-webkit-transform: rotateX(0deg);}
+25%  {-webkit-transform: rotateX(45deg);}
+50%  {-webkit-transform: rotateX(90deg);}
+75%  {-webkit-transform: rotateX(135deg);}
+100% {-webkit-transform: rotateX(180deg); opacity: 0;display: :none;}
+}
+
+@-webkit-keyframes mysecond /* Safari 和 Chrome */
+{
+0%   {-webkit-transform: rotateX(0deg);display: block;}
+25%  {-webkit-transform: rotateX(45deg);}
+50%  {-webkit-transform: rotateX(90deg);}
+75%  {-webkit-transform: rotateX(135deg);}
+100% {-webkit-transform: rotateX(180deg); opacity: 1;}
+}
+
+
+h1{
+background-image:url(http://all-for-design.com/portfolio/wp-content/themes/afdfolio/img/bgimg.gif)
+;}
+body {
+background-color: #cac7b9;
+	background:url(http://all-for-design.com/portfolio/wp-content/themes/afdfolio/img/texture.gif);}
+div#header1 {
+	background-color:666699;
+	margin:10px;}
+
+div#header2{
+	background-color: #EAE8E2;
+	margin:10px;
+	}
+.aside{
+	padding:10px;
+	margin: 10px;
+	background-color:#FFFFFF;
+	width:180px;
+	float:right;
+	clear:both;
+	}
+	
+.allContent{
+	color:black;
+	background-color:#FFFFFF;
+	position:absolute;
+	right:280px;
+	}
+center{
+	text-align:right;
+	}
+#header2 a{
+	color:black;
+	}
+.body {
+	padding:10px;
+	background-color:#FFFFFF;
+	margin-right:230px;
+	margin-left:10px;
+	margin-top:20px;
+	font-familt:"Microsoft YaHei",SimHei,arial;
+}
+.moveArrow{
+	-webkit-transition: background-color 2s;
+}
+.moveArrow:hover{
+	background-color: blue;
+}
+
+.commentsChange
+{
+	-webkit-transition: background-color 2s,font-size,2s;
+}
+.commentsChange:hover{
+	background-color: lightblue;
+	//font-size: 20px;
+}
+.myfisrt{
+	-webkit-animation-name: myfirst;
+	-webkit-animation-duration: 1s;
+	//-webkit-animation-timing-function: linear;
+	-webkit-animation-delay: 0s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+	-webkit-animation-play-state: running;
+	//background: url('http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif') no-repeat;
+	//opacity:0;
+}
+
+.imgbutton{
+	-webkit-transition:background-color 2s,background 1s;
+}
+.mysecond{
+	-webkit-animation-name: mysecond;
+	-webkit-animation-duration: 1s;
+	//-webkit-animation-timing-function: linear;
+	-webkit-animation-delay: 0s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+	-webkit-animation-play-state: running;
+	//background: url('http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif') no-repeat;
+	//opacity:0;
+}
+
+.imgbutton:hover
+{
+	background-color: blue;
+	//background: url('http://i3.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot_f.gif') no-repeat;
+}
+
+.t{
+    width: 400px;
+    margin: 20px;
+    overflow: hidden;
+}
+.trans_image_box {
+    width: 2000px;
+    height: 300px;
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+.trans_image {
+    width: 400px;
+    float: left;
+}
+.trans_image_trigger {
+    padding-top: 10px;
+    text-align: center;
+}
+
+</style>
+<script type="text/javascript">
+currentImage = 1;
+if(localStorage.currentImage)
+{
+
+	currentImage = parseInt(localStorage.currentImage);
+	if(currentImage > 10 || currentImage <0)
+	{
+		currentImage = 1;
+		localStorage.currentImage = currentImage;
+	}
+}
+else
+{
+	currentImage = 1;//下标从1开始
+	localStorage.currentImage = currentImage;
+}
+pageDiv = 5;
+totalComments = 27;
+pageCount = Math.floor(totalComments / pageDiv);
+if(totalComments%pageDiv)
+pageCount++;
+currentPage = 1;
+function changeImageOnFocus(changeToImage)
+{
+	var tempLi = $('li');
+	if(changeToImage == 0)
+		return;
+	else if(changeToImage == 10)
+		return;
+	//$(tempLi[currentImage-1]).fadeOut();
+	//$(tempLi[currentImage-1]).css("-webkit-animation-name","myfirst");
+	$(tempLi[currentImage-1]).css("-webkit-transform",": rotateX(120deg)")
+	//tempLi[currentImage-1].style.display = 'none';
+	//tempLi[changeToImage-1].style.display = 'block';
+	//$(tempLi[changeToImage-1]).fadeIn();
+	currentImage = changeToImage;
+	localStorage.currentImage = currentImage;
+}
+
+function returnICO(num1)
+{
+	var preICO = $('.imgbutton');
+	preICO[num1-1].src = "http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif";
+}
+
+function changeICO(num)
+{
+	var preICO = $('.imgbutton');
+	preICO[num-1].src = "http://i3.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot_f.gif";
+}
+function timeChange(){
+	if(currentImage == preImage)
+	{
+		changeImageOnFocus(preImage+1);
+		preImage = currentImage;
+	}
+	else preImage = currentImage;
+}
+
+function PageTo(aimPage)
+{
+	if(aimPage == 0 || aimPage > pageCount)
+		return;
+	if(aimPage == -1)//跳转到末页
+		aimPage = pageCount;
+	currentPage = aimPage;
+	document.getElementById("currentPage").innerHTML = currentPage;
+	$(".imgclass").remove();
+	$(".userID").remove();
+	for(var i = (currentPage-1)*pageDiv+1; i <= pageDiv*currentPage && i <= totalComments;i++)
+	{
+	 	eval('d = image.comment'+i);
+	  	eval('e = image.ID'+i);
+	 	eval('userimg = image.userimg'+i);
+	 	myCommemt.append($('<div class="imgclass" style="margin-left:100px"><img src="'+userimg+'" style="float:left"></div> <div class="userID"><div class="usercomment"><p style="font-size:12px;color:#06a7e1">'+e+'</p><p>'+d+'</p></div><hr class="imgclass" align=center width = 1140px /></div>'));
+	 }
+	 $(".userID").css("font-family",'"Microsoft YaHei",SimHei,arial');
+}
+function myjs(){
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+	if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	{
+		eval('image = '+ xmlhttp.responseText);
+		var myDiv1 = $('#myDiv');
+		for(var i = 1; i <= 9;i++)
+		{
+			eval('b = image.image'+i);
+			eval('c = image.text'+i);
+			if(i == currentImage)
+			myDiv1.append($('<li class= "myli" onclick="changeImageOnFocus('+(i+1)+');" style="display:block"><img class="myimg" src="'+b+'" ><p class="text">'+c+'</p></li>'));
+			else if(i != 9)myDiv1.append($('<li class= "myli" onclick="changeImageOnFocus('+(i+1)+');" style="display:none"><img class="myimg" src="'+b+'" "><p class="text">'+c+'</p></li>'));
+			else myDiv1.append($('<li class= "myli"  style="display:none"><img  class="myimg" src="'+b+'"><p class="text">'+c+'</p></li>'));
+		}
+		 $('img').css('margin-left','15%');
+		 $('img').css('margin-right','15%');
+		 $('.imgbutton').css('margin-left','0px');
+		 $('.imgbutton').css('margin-right','0px');
+		// $('.imgbutton').css('width','15px');
+		// $('.imgbutton').css('height','15px');
+		// $('.imgbutton').css('background-color','#cac7b9');
+		 $('.imgbutton').css('margin-right','5px');
+
+		 $('.imgbutton').css('border-width','0px');
+		 $('.imgbutton').css('background-position','center');
+		 $('#imgbutton1').css('margin-left','45%');
+		 $('.imgbutton').css('float','left');
+		 $('.text').css('margin-left','15%');
+		 $('.text').css('margin-right','15%');
+		 myDiv1.append($('<img id ="moveRight" class="moveArrow" src="http://i3.sinaimg.cn/dy/photo/2013/images/0626/photo_zxa_0616_cover_r.png" onclick="changeImageOnFocus(currentImage+1)" style="  position: absolute;left: 1200px;top:400px;">'));
+		 myDiv1.append($('<img id ="moveLeft" class="moveArrow" src=" http://i1.sinaimg.cn/dy/photo/2013/images/0626/photo_zxa_0616_cover_l.png" onclick="changeImageOnFocus(currentImage-1)" style="  position: absolute;left: 100px;top: 400px;">'));
+		 myCommemt = $('#comments');
+		 for(var i = 1; i <= pageDiv;i++)
+		 {
+		 	eval('d = image.comment'+i);
+		 	eval('e = image.ID'+i);
+		 	eval('userimg = image.userimg'+i);
+		 	myCommemt.append($('<div class="imgclass" style="margin-left:100px"><img src="'+userimg+'" style="float:left"><div class="userID"><div class="usercomment"><p style="font-size:12px;color:#06a7e1">'+e+'</p><p>'+d+'</p></div><hr class="imgclass" align=center width = 1140px /></div>'));
+		 }
+
+	}		 
+	else if(xmlhttp.readyState == 4){alert('failed to get the data');}
+  }
+//本地文件1  	//xmlhttp.open("GET","http://pengyou12.github.io/fe/hw4/imageList2.js",true);
+	document.getElementById("totalcommentsID").innerHTML = totalComments;
+	document.getElementById("currentPage").innerHTML = currentPage;
+	xmlhttp.open("GET","imageList2.js",true);
+	xmlhttp.send();
+	preImage = currentImage;
+	t2 = window.setInterval("timeChange();",17000);//定时器跳转
+
+}
+</script>
+</head>
+<title>我本楚狂人，凤歌笑孔丘
+</title>
+<body onload="myjs();">
+<div id='myDiv'></div>
+<div id="imgListID" class="imgListClass">
+	<img src="http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif" id = "imgbutton1" class="imgbutton"  onmouseover="changeImageOnFocus(1),changeICO(1)" onmouseout="returnICO(1)"></img>
+	<img src="http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif" class="imgbutton" onmouseover="changeImageOnFocus(2),changeICO(2)" onmouseout="returnICO(2)"></img>
+	<img src="http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif" class="imgbutton" onmouseover="changeImageOnFocus(3),changeICO(3)" onmouseout="returnICO(3)"></img>
+	<img src="http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif" class="imgbutton" onmouseover="changeImageOnFocus(4),changeICO(4)" onmouseout="returnICO(4)"></img>
+	<img src="http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif" class="imgbutton" onmouseover="changeImageOnFocus(5),changeICO(5)" onmouseout="returnICO(5)"></img>
+	<img src="http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif" class="imgbutton" onmouseover="changeImageOnFocus(6),changeICO(6)" onmouseout="returnICO(6)"></img>
+	<img src="http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif" class="imgbutton" onmouseover="changeImageOnFocus(7),changeICO(7)" onmouseout="returnICO(7)"></img>
+	<img src="http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif" class="imgbutton" onmouseover="changeImageOnFocus(8),changeICO(8)" onmouseout="returnICO(8)"></img>
+	<img src="http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif" class="imgbutton" onmouseover="changeImageOnFocus(9),changeICO(9)" onmouseout="returnICO(9)"></img>
+</div>
+<br></br>
+<div id="commentTop" name="comments" style="margin-left:100px">
+	<a>一共</a> <a id="totalcommentsID">1</a>条评论 
+	<c>当前第</c><c id="currentPage"></c><c>页</c>
+	<a href="#comments" class= 'commentsChange' onclick="PageTo(1);">首页</a>
+	<a href="#comments" class= 'commentsChange' onclick="PageTo(currentPage -1)">上一页</a>
+	<a href="#comments" class= 'commentsChange' onclick="PageTo(currentPage +1)">下一页</a>
+	<a href="#comments" class= 'commentsChange' onclick="PageTo(-1)">末页</a>
+</div>
+<hr align=center >
+<div id='comments'> </div>
+</body>
+</html>
