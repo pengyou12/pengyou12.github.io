@@ -1,0 +1,139 @@
+
+@-webkit-keyframes myfirst /* Safari 和 Chrome */
+{
+0%   {-webkit-transform: rotateX(0deg);}
+25%  {-webkit-transform: rotateX(45deg);}
+50%  {-webkit-transform: rotateX(90deg);}
+75%  {-webkit-transform: rotateX(135deg);}
+100% {-webkit-transform: rotateX(180deg); opacity: 0;display: :none;}
+}
+
+@-webkit-keyframes mysecond /* Safari 和 Chrome */
+{
+0%   {-webkit-transform: rotateX(0deg);display: block;}
+25%  {-webkit-transform: rotateX(45deg);}
+50%  {-webkit-transform: rotateX(90deg);}
+75%  {-webkit-transform: rotateX(135deg);}
+100% {-webkit-transform: rotateX(180deg); opacity: 1;}
+}
+
+
+h1{
+background-image:url(http://all-for-design.com/portfolio/wp-content/themes/afdfolio/img/bgimg.gif)
+;}
+body {
+background-color: #cac7b9;
+	background:url(http://all-for-design.com/portfolio/wp-content/themes/afdfolio/img/texture.gif);}
+div#header1 {
+	background-color:666699;
+	margin:10px;}
+
+div#header2{
+	background-color: #EAE8E2;
+	margin:10px;
+	}
+.aside{
+	padding:10px;
+	margin: 10px;
+	background-color:#FFFFFF;
+	width:180px;
+	float:right;
+	clear:both;
+	}
+	
+.allContent{
+	color:black;
+	background-color:#FFFFFF;
+	position:absolute;
+	right:280px;
+	}
+center{
+	text-align:right;
+	}
+#header2 a{
+	color:black;
+	}
+.body {
+	padding:10px;
+	background-color:#FFFFFF;
+	margin-right:230px;
+	margin-left:10px;
+	margin-top:20px;
+	font-familt:"Microsoft YaHei",SimHei,arial;
+}
+.moveArrow{
+	-webkit-transition: background-color 2s;
+}
+.moveArrow:hover{
+	background-color: blue;
+}
+
+.commentsChange
+{
+	-webkit-transition: background-color 2s,font-size,2s;
+}
+.commentsChange:hover{
+	background-color: lightblue;
+	//font-size: 20px;
+}
+.myfisrt{
+	//-webkit-transition: translate 1s,display 1s;
+	-webkit-animation-name: myfirst;
+	-webkit-animation-duration: 1s;
+	//-webkit-animation-timing-function: linear;
+	-webkit-animation-delay: 0s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+	-webkit-animation-play-state: paused;
+	//background: url('http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif') no-repeat;
+	//opacity:0;
+}
+
+.imgbutton{
+	-webkit-transition:background-color 2s,background 1s;
+}
+.mysecond{
+	-webkit-transition: translate 1s,display 1s;
+	-webkit-animation-name: mysecond;
+	-webkit-animation-duration: 1s;
+	//-webkit-animation-timing-function: linear;
+	-webkit-animation-delay: 0s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+	-webkit-animation-play-state: paused;
+	//background: url('http://i2.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot.gif') no-repeat;
+	//opacity:0;
+}
+
+.imgbutton:hover
+{
+	background-color: blue;
+	//background: url('http://i3.sinaimg.cn/dy/photo/2013/images/0809/photo_zxa_0809_dot_f.gif') no-repeat;
+}
+
+
+//.myli{
+	//-webkit-transition:all 2s ease;
+  // 	-moz-transition:all 2s ease;
+  //  -o-transition:all 2s ease;
+   // -ms-transition:all 2s ease;
+ //   transition:all 2s ease;
+//}
+#startimg{
+	style:"overflow hidden";
+	position: absolute;
+	width: 1200px;
+}
+
+#cover{
+    background:gray;
+    position:absolute;
+    left:206.7px;
+    top:8px;
+    display:none;
+    z-index:20;
+    filter:alpha(opacity=60);
+    opacity:0.6 !important;
+    width:950px;
+    height:630px;
+    } 
