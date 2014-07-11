@@ -60,6 +60,7 @@ center{
 	margin-left:10px;
 	margin-top:20px;
 	font-familt:"Microsoft YaHei",SimHei,arial;
+
 }
 .moveArrow{
 	-webkit-transition: background-color 2s;
@@ -125,6 +126,21 @@ center{
 	width: 1200px;
 }
 
+.myimg
+{
+	float:left;
+	transition: transform 0.5s;
+	-moz-transition: -moz-transform 0.5s;
+	-webkit-transition: all 1.5s;
+	-o-transition: -o-transform 0.5s;
+}
+li{
+	transition: transform 0.5s;
+	-moz-transition: -moz-transform 0.5s;
+	-webkit-transition: all 1.5s;
+	-o-transition: -o-transform 0.5s;
+}
+
 #cover{
     background:gray;
     position:absolute;
@@ -137,3 +153,22 @@ center{
     width:950px;
     height:630px;
     } 
+
+  #myDiv{
+  	//width: 950px;
+  	height: 746px;
+  	margin-left: 10%;
+  	margin-right: 15%;
+  	//position: absolute;
+  	overflow: hidden;
+
+  }
+
+  #clearfix{
+  	clear: :both;
+  	height: 0;
+  }
+  .text{
+  	height: 100px;
+  	clear: both;
+  }
