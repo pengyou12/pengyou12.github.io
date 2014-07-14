@@ -60,7 +60,7 @@ function class_Bullet(sx,sy,dx,dy,id,type){
 	this.PosX = sx;
 	this.PosY = sy;
 	this.Id = id;
-	this.moveLength = 2;
+	this.moveLength = 10;
 	this.Type = type;
 	this.getPosX = function(){
 		return this.PosX;
@@ -160,19 +160,28 @@ function mouseMove(ev)
    						LeftRightModel = 0;
   						LeftImgcount = 0;
   						RightImgcount = 0;
-  						$("#player0")[0].src = "old_guy_frame4.png";
+  						$("#player0_"+currentState)[0].style.display = "none";
+  						$('#player0_4')[0].style.left = player.positionMinx + "px";
+  						$('#player0_4')[0].style.top = player.positionMiny + "px";
+  						$("#player0_4")[0].style.display = "block";
+  						currentState = 4; 
+
   						}
   					}
   	else if(mouseposX > middleX ){
   		angle = Math.atan(tanangle);
-  		if(LeftRightModel == 0){
-  		RightImgcount = 0;
-  		LeftRightModel = 1;
-  		$("#player0")[0].src = "old_guy.png";
-  		}
+		if (LeftRightModel == 0) {
+			RightImgcount = 0;
+			LeftRightModel = 1;
+			$("#player0_" + currentState)[0].style.display = "none";
+			$('#player0_0')[0].style.left = player.positionMinx + "px";
+			$('#player0_0')[0].style.top = player.positionMiny + "px";
+			$("#player0_0")[0].style.display = "block";
+			currentState = 0;
+		}
   	}
   		angle = angle * 180 / 3.14159;
-  		$("#player0").css( 'transform', 'rotate('+angle+'deg)' );
+  		$("#player0_"+currentState).css( 'transform', 'rotate('+angle+'deg)' );
 }
 //判断鼠标是否被按下
 function MouseDown(ev){
@@ -230,6 +239,7 @@ function Play(){
 	intervalTime = 200; //间隔时间
 	LeftImgcount = 0;
 	RightImgcount = 0;
+	currentState = 0;//记录当前切换到第几张图了
 	$('#playBox').append($('<div id = "enemyBox"></div>'));
 	$('#playBox').append($('<div id = "bulletBox"></div>'));
 	//设定：
@@ -239,9 +249,18 @@ function Play(){
 		//产生当前的player
 		player = new class_player();
 		PlayerArr.push(player);
-		$('#playBox').append($('<img id = "player'+(PlayerTotal)+'" style="position:absolute;" src = "http://pengyou12.github.io/old_guy.png">'));
-		$('#player'+(PlayerTotal))[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
-  		$('#player'+(PlayerTotal))[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
+		for(var i = 0; i <7;i++){
+			if(!i){
+				$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:block" src = "http://pengyou12.github.io/doom_guy.png">'));
+				$('#player'+PlayerTotal+'_'+i)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
+  				$('#player'+PlayerTotal+'_'+i)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
+			}
+			else{
+			$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:none" src = "http://pengyou12.github.io/doom_guy_frame'+i+'.png">'));
+			$('#player'+PlayerTotal+'_'+i)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
+  			$('#player'+PlayerTotal+'_'+i)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
+  			}
+  		}
   		PlayerTotal++;
 		tempPlayer = new class_player();
 		PlayerArr.push(tempPlayer);
@@ -333,7 +352,7 @@ function Play(){
 		 				// PlayerArr[ele].life -= player.harm;
 		 				$("#bullet_enemy"+elem).remove();
 		 				delete BulletArr2[elem];
-		 				$("#player"+ele).remove();
+		 				$("#player0_"+currentState).remove();
 		 				delete PlayerArr[ele];
 		 			}
 		 		}
@@ -348,7 +367,7 @@ function Play(){
 					;
 				}
 				else{
-					$("#player"+ele).remove();
+					$("#player0_"+currentState).remove();
 					delete PlayerArr[ele];
 					}
 			}
@@ -381,7 +400,7 @@ function Play(){
 				if (PlayerArr[elem].positionMiny > parseInt(MapHeight) ||  PlayerArr[elem].positionMaxx < 0 || PlayerArr[elem].positionMinx > parseInt(MapWidth) || PlayerArr[elem].positionMaxy < 0 )
 				{
 					//remove 
-					$("#player"+elem).remove();
+					$("#player0_"+currentState).remove();
 					delete PlayerArr[elem];
 					}
 			}
@@ -410,6 +429,7 @@ function Play(){
 		var CheckKey = function(){
 				var middleX = (player.positionMinx + player.positionMaxx) / 2;
 				var middleY = (player.positionMiny + player.positionMaxy) / 2;
+				var changeToState = 0;
 			if((LeftArrow && RightArrow)||(UpArrow && DownArrow))//按键冲突
   			{
   				LeftArrow = false;RightArrow = false;UpArrow = false; DownArrow = false;
@@ -424,37 +444,29 @@ function Play(){
   						RightImgcount = 0;
   						if(LeftImgcount == 0)
   						{
-  							$("#player0")[0].src = "old_guy_frame4.png";
+  							changeToState = 4;
   						}
   						else if(LeftImgcount == 1)
   						{
-  							$("#player0")[0].src = "old_guy_frame5.png";
+  							changeToState = 5;
   						}
   						else{
-  							$("#player0")[0].src = "old_guy_frame6.png";
+  							changeToState = 6;
   						}
   					}
   					else{//右边模式
   						LeftImgcount = 0;
   						LeftRightModel = 1;
   						RightImgcount = (RightImgcount +1) % 4;
-  						if(RightImgcount == 0)
-  						{
-  							$("#player0")[0].src = "old_guy.png";
-  						}
-  						else if(RightImgcount == 1)
-  						{
-  							$("#player0")[0].src = "old_guy_frame1.png";
-  						}
-  						else if(RightImgcount == 2)
-  						{
-  							$("#player0")[0].src = "old_guy_frame2.png";
-  						}
-  						else if(RightImgcount == 3)
-  						{
-  							$("#player0")[0].src = "old_guy_frame3.png";
-  						}
+  						changeToState = RightImgcount;
   					}
+  						$("#player0_"+currentState)[0].style.display = "none";
+  						$('#player0_'+changeToState)[0].style.left = player.positionMinx + "px";
+  						$('#player0_'+changeToState)[0].style.top = player.positionMiny + "px";
+  						$("#player0_"+changeToState)[0].style.display = "block";
+  						currentState = changeToState; 
+  						$("#player0_"+currentState).css( 'transform', 'rotate('+angle+'deg)' );
+
   				}
   				if(LeftArrow) player.moveLeft();
 	  			if(RightArrow) player.moveRight();
@@ -462,8 +474,10 @@ function Play(){
   				if(DownArrow) player.moveDown();
   				//换图片，实现过渡效果
   			} 
-  			 	$('#player0')[0].style.left = player.positionMinx + "px";
-  				$('#player0')[0].style.top = player.positionMiny + "px";
+  			 	$('#player'+0+'_'+currentState)[0].style.left = player.positionMinx + "px";
+  				$('#player'+0+'_'+currentState)[0].style.top = player.positionMiny + "px";
+  				$("#player0_"+currentState).css( 'transform', 'rotate('+angle+'deg)' );
+
 		} 
 		setInterval(CheckKey,50);
 		//每0.05秒-检测player发射子弹：鼠标左键按下
