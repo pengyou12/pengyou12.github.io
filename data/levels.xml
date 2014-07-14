@@ -1,0 +1,41 @@
+<LevelList>
+  <JumpTo>0</JumpTo>
+  <Level completed="0" filename="" position="0" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_cluster_small.txt" position="1" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_cluster_n_homing.txt" position="2" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_lots_of_bigbads.txt" position="3" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_small_guys.txt" position="4" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_05.xml" position="5" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_06.xml" position="6" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_14.xml" position="7" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_12.xml" position="8" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_07.xml" position="9" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_13.xml" position="10" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_15.xml" position="11" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_16.xml" position="12" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_11.xml" position="13" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_10.xml" position="14" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_17.xml" position="15" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_09.xml" position="16" >
+  </Level>
+  <Level completed="0" filename="data/levels/level_18.xml" position="17" >
+  </Level>
+  <Level completed="0" filename="data/levels/the_end.xml" position="18" >
+  </Level>
+</LevelList>

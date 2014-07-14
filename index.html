@@ -1,108 +1,19 @@
-﻿<!DOCTYPE HTML>
+﻿<!doctype html>
 <html>
 <head>
-<style type="text/css">
-h1{
-background-image:url(http://all-for-design.com/portfolio/wp-content/themes/afdfolio/img/bgimg.gif)
-;}
-body {
-background-color: #cac7b9;
-	background:url(http://all-for-design.com/portfolio/wp-content/themes/afdfolio/img/texture.gif);}
-div#header1 {
-	background-color:666699;
-	margin:10px;}
-
-div#header2{
-	background-color: #EAE8E2;
-	margin:10px;
-	}
-.aside{
-	padding:10px;
-	margin: 10px;
-	background-color:#FFFFFF;
-	width:180px;
-	float:right;
-	clear:both;
-	}
-	
-.allContent{
-	color:black;
-	background-color:#FFFFFF;
-	position:absolute;
-	right:280px;
-	}
-center{
-	text-align:right;
-	}
-#header2 a{
-	color:black;
-	}
-.body {
-	padding:10px;
-	background-color:#FFFFFF;
-	margin-right:230px;
-	margin-left:10px;
-	margin-top:20px;
-}
-</style>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <title>Game</title>
 </head>
-<title>我本楚狂人，凤歌笑孔丘
-</title>
 <body>
-<div id="header1">
-<h1>
-我本楚狂人，凤歌笑孔丘
-</h1>
-</div>
-<div id="header2">
-<a href="https://pengyou12.github.com/index.html" style="text-decoration:none">首页</a>
-<a href="https://pengyou12.github.com/articleindex.html" style="text-decoration:none">文章 </a>
-<a href="https://pengyou12.github.com/imgindex.html" style="text-decoration:none">相册</a>
-<a href="https://pengyou12.github.com/aboutme.html" style="text-decoration:none">关于我 </a>
-</div>
-<div id = "myself" class = "aside">
-<img src="https://raw.githubusercontent.com/pengyou12/pengyou12.github.io/master/img/pengyou.PNG"/>
-<hr />
-我叫彭友，</br>暗梅幽闻花，</br>卧枝伤恨低。</br>遥闻卧似水，</br>晓鹏又释野。</br>
-</div>
-<div id = "homework" class = "aside">
-作业链接
-<hr />
-<a href="https://pengyou12.github.com/fe/hw1/index.html" style="text-decoration:none";>第一次作业</a>
-<a href="https://pengyou12.github.com/fe/hw4/index.html" style="text-decoration:none";>第四次作业</a>
-</div>
-<div id = "connection" class = "aside">
-联系方式：
-<hr />
-手机：18811368567</br>
-邮箱：
-<a href="mailto:a623917@126.com">a623917@126.com</a></br>
-<a href="http://www.renren.com/480025738/profile" target="_blank" style="text-decoration:none";>人人主页</a>
-<a href="http://weibo.com/3928377038/profile?topnav=1&wvr=5&user=1" target="_blank" style="text-decoration:none";>新浪微博</a>
-</div>
-<div id = "article1" class = "body">
-	最近文章
-	<hr />
-	<p>
-初学web前端之感想
-	</br>
-	<center>2014.7.1</center>	
-</br>
-<a class = "allContent" href="https://pengyou12.github.com/articles/article1.html" style="text-decoration:none";>详情</a> 
-</p>
-</div>
-<div id = "article2" class = "body">
-	最近文章
-	<hr />
-	<p>
-初学web前端之感想
-	</br>
-	<center>2014.7.1</center>	
-</br>
-<a class = "allContent" href="https://pengyou12.github.com/articles/article1.html" style="text-decoration:none";>详情</a> 
-</p>
-</div>
-<div id = "footer"> 
-</div>
+  <div style="cursor: default" onselectstart="return false" id="mainWrapper" onMouseDown="MouseDown(event);" onMouseUp="MouseUp();" onMouseMove="mouseMove(event);">
+  	<div id="playBox">
+  	<!-- add game object here -->
+  	</div>
+  </div>
+ 
+  <script langeuage="javascript"  src="game.js">
+  </script>
 </body>
 </html>
