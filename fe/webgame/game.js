@@ -226,7 +226,7 @@ function Play(){
 	BulletTotal = 0; //子弹总数
 	EnemyArr = [];  //敌人数组
 	EnemyTotal = 0; //敌人总数
-	LeftRightModel = 0;//0表示是左边模式，1是右边模式
+	LeftRightModel = 1;//0表示是左边模式，1是右边模式
 	intervalTime = 200; //间隔时间
 	LeftImgcount = 0;
 	RightImgcount = 0;
@@ -408,6 +408,8 @@ function Play(){
 			RecheckRange = setInterval(checkRange,500);
 		//每0.2秒-检测player方向改变：player:键盘方向键按下
 		var CheckKey = function(){
+				var middleX = (player.positionMinx + player.positionMaxx) / 2;
+				var middleY = (player.positionMiny + player.positionMaxy) / 2;
 			if((LeftArrow && RightArrow)||(UpArrow && DownArrow))//按键冲突
   			{
   				LeftArrow = false;RightArrow = false;UpArrow = false; DownArrow = false;
