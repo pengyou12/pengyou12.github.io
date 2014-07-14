@@ -416,7 +416,7 @@ function Play(){
   			{
   				if(LeftArrow || RightArrow || UpArrow || DownArrow)
   				{
-  					if(mouseposX < player.positionMinx){//左边模式
+  					if(mouseposX < middleX){//左边模式
   						LeftRightModel = 0;
   						LeftImgcount = (LeftImgcount+1) % 3;
   						RightImgcount = 0;
