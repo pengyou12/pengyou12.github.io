@@ -49,7 +49,7 @@ function class_Enemy(sx,sy,dx,dy,type)
 //bullet 构造函数
 //sx,sy  初始位置
 //dx,dy  运行方向
-function class_Bullet(sx,sy,dx,dy,id){
+function class_Bullet(sx,sy,dx,dy,id,type){
 	playMap = $("#playBox");
 	MapWidth = playMap.css("width");
 	MapHeight = playMap.css("height");
@@ -61,6 +61,7 @@ function class_Bullet(sx,sy,dx,dy,id){
 	this.PosY = sy;
 	this.Id = id;
 	this.moveLength = 2;
+	this.Type = type;
 	this.getPosX = function(){
 		return this.PosX;
 	}
@@ -91,8 +92,8 @@ function class_player()
 	MapHeight = playMap.css("height");
 	this.positionMinx = Math.random() * parseInt(MapWidth);
 	this.positionMiny = Math.random() * parseInt(MapHeight);
-	this.positionMaxx = this.positionMinx + 10;
-	this.positionMaxy = this.positionMiny + 10;
+	this.positionMaxx = this.positionMinx + 65;
+	this.positionMaxy = this.positionMiny + 75;
 	this.moveLength = 4;
 	this.harm = 1;//当前子弹的伤害
 	this.shoot = function(){
@@ -147,11 +148,13 @@ function class_player()
 }
 function mouseMove(ev)
 {
-	var angle;
+
 	mouseposX = ev.pageX-50;
    	mouseposY = ev.pageY-50; 
-   	var tanangle = (player.positionMiny - mouseposY) / (player.positionMinx - mouseposX);
-   	if(mouseposX < player.positionMinx ){//左边模式
+	var middleX = (player.positionMinx + player.positionMaxx) / 2;
+	var middleY = (player.positionMiny + player.positionMaxy) / 2;
+   	var tanangle = (middleY - mouseposY) / (middleX - mouseposX);
+   	if(mouseposX <= middleX ){//左边模式
    						angle = Math.atan(tanangle);
    						if(LeftRightModel == 1){
    						LeftRightModel = 0;
@@ -160,7 +163,7 @@ function mouseMove(ev)
   						$("#player0")[0].src = "old_guy_frame4.png";
   						}
   					}
-  	else if(mouseposX > player.positionMinx ){
+  	else if(mouseposX > middleX ){
   		angle = Math.atan(tanangle);
   		if(LeftRightModel == 0){
   		RightImgcount = 0;
@@ -270,13 +273,29 @@ function Play(){
 	//产生子弹
 	//sx,sy初始位置
 	//dx,dy运行方向
-	var bulletGenerate = function(sx,sy,dx,dy){
-		var b = new class_Bullet(sx,sy,dx,dy, BulletTotal);
+	var bulletGenerate = function(sx,sy,dx,dy,type){
+		var b = new class_Bullet(sx,sy,dx,dy, BulletTotal,type);
+		var middleX = (player.positionMinx + player.positionMaxx) / 2;
+		var middleY = (player.positionMiny + player.positionMaxy) / 2;
+		var tempangle2 = angle;
 		BulletArr.push(b);
-		temp = "<img style='position:absolute;' src = 'old_guy_bullet.png'class='bullet' id='bullet"+BulletTotal+"'></div>";
-		$('#bulletBox').append(temp);
-		$('#bullet'+BulletTotal)[0].style.left = sx+"px";
-		$('#bullet'+BulletTotal)[0].style.top = sy+"px";
+		if (type == 1)
+		{
+			temp = "<img style='position:absolute;' src = 'old_guy_bullet.png'class='bullet' id='bullet"+BulletTotal+"'></div>";
+			$('#bulletBox').append(temp);
+			$('#bullet'+BulletTotal)[0].style.left = sx+"px";
+			$('#bullet'+BulletTotal)[0].style.top = sy+"px";
+			if(mouseposX < middleX){
+				tempangle2 += 180;
+			}
+			$("#bullet"+BulletTotal).css( 'transform', 'rotate('+tempangle2+'deg)' );
+		}	
+		else
+		{
+			temp = "<div class='bullet' style='left:" + sx + "px;top:" + sy + "px' id='bullet" + "" + BulletTotal +"'></div>";
+			$('#bulletBox').append(temp);
+
+		}
 		BulletTotal++;
 	}
 
@@ -288,22 +307,37 @@ function Play(){
 		//删除被子弹打中的怪物
 		for(var elem in BulletArr)
 		{
-			for(var ele in EnemyArr)
-			{
-				if(EnemyArr[ele].PosX + enemyWidth > BulletArr[elem].PosX && EnemyArr[ele].PosY + enemyWidth > BulletArr[elem].PosY && EnemyArr[ele].PosY - enemyWidth < BulletArr[elem].PosY && EnemyArr[ele].PosX - enemyWidth < BulletArr[elem].PosX){
-					//remove
-					// EnemyArr[ele].life -= player.harm;
-					$("#bullet"+elem).remove();
-					delete BulletArr[elem];
-					EnemyArr[ele].life -= 50;
-					if(EnemyArr[ele].life <= 0)
-					{
-						$("#enemy"+ele).remove();
-					delete EnemyArr[ele];
-					}
-				}	
+			if (BulletArr[elem].Type == 1){
+				for(var ele in EnemyArr)
+				{
+					if(EnemyArr[ele].PosX + enemyWidth > BulletArr[elem].PosX && EnemyArr[ele].PosY + enemyWidth > BulletArr[elem].PosY && EnemyArr[ele].PosY - enemyWidth < BulletArr[elem].PosY && EnemyArr[ele].PosX - enemyWidth < BulletArr[elem].PosX){
+						//remove
+						// EnemyArr[ele].life -= player.harm;
+						$("#bullet"+elem).remove();
+						delete BulletArr[elem];
+						EnemyArr[ele].life -= 50;
+						if(EnemyArr[ele].life <= 0)
+						{
+							$("#enemy"+ele).remove();
+							delete EnemyArr[ele];
+						}
+					}	
+				}
 			}
-
+			else
+			{
+				for(var ele in PlayerArr)
+		 		{
+		 			if(PlayerArr[ele].positionMinx + playerWidth > BulletArr2[elem].positionMinx && PlayerArr[ele].positionMiny + playerWidth > BulletArr2[elem].positionMiny && PlayerArr[ele].positionMiny - playerWidth < BulletArr2[elem].positionMiny && PlayerArr[ele].positionMinx - playerWidth < BulletArr2[elem].positionMinx){
+		 				//remove
+		 				// PlayerArr[ele].life -= player.harm;
+		 				$("#bullet_enemy"+elem).remove();
+		 				delete BulletArr2[elem];
+		 				$("#player"+ele).remove();
+		 				delete PlayerArr[ele];
+		 			}
+		 		}
+		 	}	
 		}
 		//删除被怪物撞到的人
 		for(var ele in PlayerArr)
@@ -436,14 +470,24 @@ function Play(){
 			{	
 				// cursor.PosX = mouseposX;
 				// cursor.PosY = mouseposY;
-				var DX = mouseposX - player.positionMinx;
-				var DY = mouseposY - player.positionMiny;
+				var tempWidth = (player.positionMaxx - player.positionMinx) / 2; 
+				var tempHeight = (player.positionMaxy - player.positionMiny) / 2;
+				var middleX = (player.positionMinx + player.positionMaxx) / 2;
+				var middleY = (player.positionMiny + player.positionMaxy) / 2;
+				var DX = mouseposX - middleX;
+				var DY = mouseposY - middleY;
 				var dx1,dy1;
 				dx1 = DX /Math.sqrt((DX*DX)+(DY*DY));
 				dy1 = DY /Math.sqrt((DX*DX)+(DY*DY));
 				DX = dx1;
 				DY = dy1;
-				bulletGenerate(player.positionMinx, player.positionMiny, DX, DY);
+				var tempangle = -angle;
+				if(mouseposX < middleX)
+				{
+					tempangle += 180;
+				}
+				bulletGenerate(middleX + tempWidth * Math.cos(tempangle/180 * 3.14159 + 0.2), middleY - tempWidth * Math.sin(tempangle/180 * 3.14159 + 0.2), DX, DY,1);
+
 			}
 		}
 		var ReCheckMouse = setInterval(CheckMouse,200);
@@ -494,22 +538,23 @@ function Play(){
 		}
 		ReEnemyMoveToward = setInterval(enemyMoveStraight, intervalTime);
 
-		//每0.4秒-enemy（3） 瞄准player发射子弹
-		var enemyShootToward = function(){
-			for (var i in EnemyArr)
-				if (EnemyArr[i].Type == 2){
-				var cursor = EnemyArr[i];
-				var DX = player.PosX - cursor.PosX;
-				var DY = player.PosY - cursor.PosY;
-				DX = DX /Math.sqrt((DX*DX)+(DY*DY));
-				DY = DY /Math.sqrt((DX*DX)+(DY*DY));
-				bulletGenerate(cursor.PosX, cursor.PosY, DX, DY);
-			}
-		}
-		ReEnemyShootToward = setInterval(enemyShootToward, intervalTime*2);
+		// //每0.4秒-enemy（3） 瞄准player发射子弹
+		// var enemyShootToward = function(){
+		// 	for (var i in EnemyArr)
+		// 		if (EnemyArr[i].Type == 2){
+		// 		var cursor = EnemyArr[i];
+		// 		var DX = player.PosX - cursor.PosX;
+		// 		var DY = player.PosY - cursor.PosY;
+		// 		DX = DX /Math.sqrt((DX*DX)+(DY*DY));
+		// 		DY = DY /Math.sqrt((DX*DX)+(DY*DY));
+		// 		bulletGenerate(cursor.PosX, cursor.PosY, DX, DY,1);
+		// 	}
+		// }
+		// ReEnemyShootToward = setInterval(enemyShootToward, intervalTime*2);
 }
 
 var LeftArrow,RightArrow,UpArrow,DownArrow, MouseClick;//记录按键情况
 var MapWidth,MapHeight;
 var mouseposX,mouseposY;
+var angle;
 Play();
