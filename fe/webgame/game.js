@@ -114,7 +114,7 @@ function class_player()
 	this.moveLeft = function(){
 									if( LeftArrow == true)
 									{
-										LeftArrow = false;
+										//LeftArrow = false;
 										this.positionMinx -= this.moveLength;
 										this.positionMaxx -= this.moveLength;
 									}
@@ -122,7 +122,7 @@ function class_player()
 	this.moveRight = function(){
 									if( RightArrow == true)
 									{
-										RightArrow = false;
+										//RightArrow = false;
 										this.positionMinx += this.moveLength;
 										this.positionMaxx += this.moveLength;
 									}
@@ -130,7 +130,7 @@ function class_player()
 	this.moveUp = function(){
 									if( UpArrow == true)
 									{
-										UpArrow = false;
+										//UpArrow = false;
 										this.positionMiny -= this.moveLength;
 										this.positionMaxy -= this.moveLength;
 									}
@@ -138,13 +138,62 @@ function class_player()
 	this.moveDown = function(){
 									if( DownArrow == true)
 									{
-										DownArrow = false;
+										//DownArrow = false;
 										this.positionMiny += this.moveLength;
 										this.positionMaxy += this.moveLength;
 										
 									}
 									
 							};
+}
+function CheckKey() {
+	var middleX = (player.positionMinx + player.positionMaxx) / 2;
+	var middleY = (player.positionMiny + player.positionMaxy) / 2;
+	var changeToState = 0;
+	if (false) //按键冲突 LeftArrow && RightArrow) || (UpArrow && DownArrow)
+	{
+		// LeftArrow = false;
+		// RightArrow = false;
+		// UpArrow = false;
+		// DownArrow = false;
+	} else {
+		if (LeftArrow || RightArrow || UpArrow || DownArrow) {
+			if (mouseposX < middleX) { //左边模式
+				LeftRightModel = 0;
+				LeftImgcount = (LeftImgcount + 1) % 3;
+				RightImgcount = 0;
+				if (LeftImgcount == 0) {
+					changeToState = 4;
+				} else if (LeftImgcount == 1) {
+					changeToState = 5;
+				} else {
+					changeToState = 6;
+				}
+			} else { //右边模式
+				LeftImgcount = 0;
+				LeftRightModel = 1;
+				RightImgcount = (RightImgcount + 1) % 4;
+				changeToState = RightImgcount;
+			}
+			$("#player0_" + currentState)[0].style.display = "none";
+			$('#player0_' + changeToState)[0].style.left = player.positionMinx + "px";
+			$('#player0_' + changeToState)[0].style.top = player.positionMiny + "px";
+			$("#player0_" + changeToState)[0].style.display = "block";
+			currentState = changeToState;
+			$("#player0_" + currentState).css('transform', 'rotate(' + angle + 'deg)');
+
+	}
+		if (LeftArrow) player.moveLeft();
+		if (RightArrow) player.moveRight();
+		if (UpArrow) player.moveUp();
+		if (DownArrow) player.moveDown();
+		//换图片，实现过渡效果
+	}
+	$('#player' + 0 + '_' + currentState)[0].style.left = player.positionMinx + "px";
+	$('#player' + 0 + '_' + currentState)[0].style.top = player.positionMiny + "px";
+	$("#player0_" + currentState).css('transform', 'rotate(' + angle + 'deg)');
+
+
 }
 function mouseMove(ev)
 {
@@ -193,7 +242,7 @@ function MouseDown(ev){
 function MouseUp(){
 	MouseClick = false;
 }
-document.onkeydown = function (e)
+window.onkeydown = function (e)
 {
 	if(window.event) // IE
 	{
@@ -202,21 +251,44 @@ document.onkeydown = function (e)
 else if(e.which) // Netscape/Firefox/Opera
 	{
 	keynum = e.which
-	}
-	if(keynum == 37){
+}	if (keynum == 37) {
 		LeftArrow = true;
+		//player.moveLeft();
+	} else if (keynum == 38) {
+		UpArrow = true;
+		//	player.moveUp();
+	} else if (keynum == 39) {
+		RightArrow = true;
+		//	player.moveRight();
+	} else if (keynum == 40) {
+		DownArrow = true;
+		//player.moveDown();
+	}
+}
+window.onkeyup = function(e){
+	var keynum;
+	if(window.event) // IE
+	{
+	keynum = e.keyCode
+	}
+	else if(e.which) // Netscape/Firefox/Opera
+	{
+	keynum1 = e.which
+	}
+		if(keynum == 37){
+		LeftArrow = false;
 		//player.moveLeft();
 	}
 	else if(keynum == 38){
-		UpArrow = true;
+		UpArrow = false;
 	//	player.moveUp();
 	}
 	else if(keynum == 39){
-		RightArrow = true;
+		RightArrow = false;
 	//	player.moveRight();
 	}
 	else if(keynum == 40){
-		DownArrow = true;
+		DownArrow = false;
 		//player.moveDown();
 	}
 }
@@ -251,12 +323,12 @@ function Play(){
 		PlayerArr.push(player);
 		for(var i = 0; i <7;i++){
 			if(!i){
-				$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:block" src = "http://pengyou12.github.io/doom_guy.png">'));
+				$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:block" src = "doom_guy.png">'));
 				$('#player'+PlayerTotal+'_'+i)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
   				$('#player'+PlayerTotal+'_'+i)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
 			}
 			else{
-			$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:none" src = "http://pengyou12.github.io/doom_guy_frame'+i+'.png">'));
+			$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:none" src = "doom_guy_frame'+i+'.png">'));
 			$('#player'+PlayerTotal+'_'+i)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
   			$('#player'+PlayerTotal+'_'+i)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
   			}
@@ -426,60 +498,7 @@ function Play(){
 		}
 			RecheckRange = setInterval(checkRange,500);
 		//每0.2秒-检测player方向改变：player:键盘方向键按下
-		var CheckKey = function(){
-				var middleX = (player.positionMinx + player.positionMaxx) / 2;
-				var middleY = (player.positionMiny + player.positionMaxy) / 2;
-				var changeToState = 0;
-			if((LeftArrow && RightArrow)||(UpArrow && DownArrow))//按键冲突
-  			{
-  				LeftArrow = false;RightArrow = false;UpArrow = false; DownArrow = false;
-  			}
-  			else
-  			{
-  				if(LeftArrow || RightArrow || UpArrow || DownArrow)
-  				{
-  					if(mouseposX < middleX){//左边模式
-  						LeftRightModel = 0;
-  						LeftImgcount = (LeftImgcount+1) % 3;
-  						RightImgcount = 0;
-  						if(LeftImgcount == 0)
-  						{
-  							changeToState = 4;
-  						}
-  						else if(LeftImgcount == 1)
-  						{
-  							changeToState = 5;
-  						}
-  						else{
-  							changeToState = 6;
-  						}
-  					}
-  					else{//右边模式
-  						LeftImgcount = 0;
-  						LeftRightModel = 1;
-  						RightImgcount = (RightImgcount +1) % 4;
-  						changeToState = RightImgcount;
-  					}
-  						$("#player0_"+currentState)[0].style.display = "none";
-  						$('#player0_'+changeToState)[0].style.left = player.positionMinx + "px";
-  						$('#player0_'+changeToState)[0].style.top = player.positionMiny + "px";
-  						$("#player0_"+changeToState)[0].style.display = "block";
-  						currentState = changeToState; 
-  						$("#player0_"+currentState).css( 'transform', 'rotate('+angle+'deg)' );
-
-  				}
-  				if(LeftArrow) player.moveLeft();
-	  			if(RightArrow) player.moveRight();
-	  			if(UpArrow) player.moveUp();
-  				if(DownArrow) player.moveDown();
-  				//换图片，实现过渡效果
-  			} 
-  			 	$('#player'+0+'_'+currentState)[0].style.left = player.positionMinx + "px";
-  				$('#player'+0+'_'+currentState)[0].style.top = player.positionMiny + "px";
-  				$("#player0_"+currentState).css( 'transform', 'rotate('+angle+'deg)' );
-
-		} 
-		setInterval(CheckKey,50);
+			setInterval(CheckKey,50);
 		//每0.05秒-检测player发射子弹：鼠标左键按下
 		var CheckMouse = function(){
 			if(MouseClick)
@@ -502,7 +521,7 @@ function Play(){
 				{
 					tempangle += 180;
 				}
-				bulletGenerate(middleX + tempWidth * Math.cos(tempangle/180 * 3.14159 + 0.2), middleY - tempWidth * Math.sin(tempangle/180 * 3.14159 + 0.2), DX, DY,1);
+				bulletGenerate(middleX + tempWidth * Math.cos(tempangle/180 * 3.14159 - 0.2), middleY - tempWidth * Math.sin(tempangle/180 * 3.14159 - 0.2), DX, DY,1);
 
 			}
 		}
@@ -572,5 +591,6 @@ function Play(){
 var LeftArrow,RightArrow,UpArrow,DownArrow, MouseClick;//记录按键情况
 var MapWidth,MapHeight;
 var mouseposX,mouseposY;
-var angle;
+var angle,keyEvent;
+var keylist = new Array();//记录按键队列
 Play();
