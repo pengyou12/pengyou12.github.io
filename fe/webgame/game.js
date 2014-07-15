@@ -87,6 +87,7 @@ function class_Bullet(sx,sy,dx,dy,id,type){
 function class_player()
 {
 	//"use strict";
+	imgID = 1;
 	playMap = $("#playBox");
 	MapWidth = playMap.css("width");
 	MapHeight = playMap.css("height");
@@ -94,7 +95,7 @@ function class_player()
 	this.positionMiny = Math.random() * parseInt(MapHeight);
 	this.positionMaxx = this.positionMinx + 65;
 	this.positionMaxy = this.positionMiny + 75;
-	this.moveLength = 4;
+	this.moveLength = 14;
 	this.harm = 1;//当前子弹的伤害
 	this.shoot = function(){
 								if(MouseClick == true)
@@ -146,10 +147,42 @@ function class_player()
 									
 							};
 }
+
+function player_death_animation(playerID,x,y) {
+	function death_animation() {
+		if (imgID > 1) {
+		$('#player' + playerID + '_death' + (imgID - 1))[0].style.display = "none";
+		}
+		if(imgID >= 7 )
+		{
+			delete PlayerArr[ele];
+			clearInterval(check_death_aniimation);
+			return;
+		}
+		var tempAng;
+		tempAng = angle;
+		if(mouseposX < x + 65 / 2)
+		{
+			$("#player" + playerID + "_death" + imgID).css('transform', 'rotateY(' + 180 + 'deg) rotate(' + -tempAng + 'deg)');
+		}
+		else{$("#player" + playerID + "_death" + imgID).css('transform', 'rotate(' + tempAng + 'deg)');}
+		$('#player' + playerID + '_death' + imgID)[0].style.left = x + "px";
+		$('#player' + playerID + '_death' + imgID)[0].style.top = y + "px";
+		$('#player' + playerID + '_death' + imgID)[0].style.display = "block";
+		imgID ++;
+	}
+	check_death_aniimation = setInterval(death_animation,100);
+}
 function CheckKey() {
+	if(playDeath){return;}//人物死亡
 	var middleX = (player.positionMinx + player.positionMaxx) / 2;
 	var middleY = (player.positionMiny + player.positionMaxy) / 2;
 	var changeToState = 0;
+	if (LeftArrow) player.moveLeft();
+	if (RightArrow) player.moveRight();
+	if (UpArrow) player.moveUp();
+	if (DownArrow) player.moveDown();
+	mouseMove();
 	if (false) //按键冲突 LeftArrow && RightArrow) || (UpArrow && DownArrow)
 	{
 		// LeftArrow = false;
@@ -183,10 +216,6 @@ function CheckKey() {
 			$("#player0_" + currentState).css('transform', 'rotate(' + angle + 'deg)');
 
 	}
-		if (LeftArrow) player.moveLeft();
-		if (RightArrow) player.moveRight();
-		if (UpArrow) player.moveUp();
-		if (DownArrow) player.moveDown();
 		//换图片，实现过渡效果
 	}
 	$('#player' + 0 + '_' + currentState)[0].style.left = player.positionMinx + "px";
@@ -197,24 +226,29 @@ function CheckKey() {
 }
 function mouseMove(ev)
 {
-
-	mouseposX = ev.pageX-50;
-   	mouseposY = ev.pageY-50; 
+	if(playDeath){return;}
+	if(ev)
+	{
+		mouseposX = ev.pageX-50;
+   		mouseposY = ev.pageY-50;
+   		} 
 	var middleX = (player.positionMinx + player.positionMaxx) / 2;
 	var middleY = (player.positionMiny + player.positionMaxy) / 2;
    	var tanangle = (middleY - mouseposY) / (middleX - mouseposX);
+   	angle = Math.atan(tanangle);
    	if(mouseposX <= middleX ){//左边模式
-   						angle = Math.atan(tanangle);
+
    						if(LeftRightModel == 1){
    						LeftRightModel = 0;
   						LeftImgcount = 0;
   						RightImgcount = 0;
+  						if(ev){
   						$("#player0_"+currentState)[0].style.display = "none";
   						$('#player0_4')[0].style.left = player.positionMinx + "px";
   						$('#player0_4')[0].style.top = player.positionMiny + "px";
   						$("#player0_4")[0].style.display = "block";
   						currentState = 4; 
-
+  							}
   						}
   					}
   	else if(mouseposX > middleX ){
@@ -222,15 +256,19 @@ function mouseMove(ev)
 		if (LeftRightModel == 0) {
 			RightImgcount = 0;
 			LeftRightModel = 1;
+			if(ev){
 			$("#player0_" + currentState)[0].style.display = "none";
 			$('#player0_0')[0].style.left = player.positionMinx + "px";
 			$('#player0_0')[0].style.top = player.positionMiny + "px";
 			$("#player0_0")[0].style.display = "block";
 			currentState = 0;
+			}
 		}
   	}
   		angle = angle * 180 / 3.14159;
+  		if(ev){
   		$("#player0_"+currentState).css( 'transform', 'rotate('+angle+'deg)' );
+  		}
 }
 //判断鼠标是否被按下
 function MouseDown(ev){
@@ -331,6 +369,9 @@ function Play(){
 			$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:none" src = "doom_guy_frame'+i+'.png">'));
 			$('#player'+PlayerTotal+'_'+i)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
   			$('#player'+PlayerTotal+'_'+i)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
+  			$('#playBox').append($('<img id = "player'+PlayerTotal+'_death'+i+'" style="position:absolute;display:none" src = "doom_death_frame'+i+'.png">'));
+			$('#player'+PlayerTotal+'_death'+i)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
+  			$('#player'+PlayerTotal+'_death'+i)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
   			}
   		}
   		PlayerTotal++;
@@ -393,6 +434,7 @@ function Play(){
 	//事件检测:
 		//每0.2秒-检测撞击：player与enemy（game over） bullet与enemey（生命值减少-检测是否死亡）
 	var checkDeath = function(){
+		if(playDeath){return ;}
 		var enemyWidth = 15;//怪中心到边上的距离
 		var playerWidth = 10;
 		//删除被子弹打中的怪物
@@ -425,6 +467,8 @@ function Play(){
 		 				$("#bullet_enemy"+elem).remove();
 		 				delete BulletArr2[elem];
 		 				$("#player0_"+currentState).remove();
+		 				player_death_animation(0,PlayerArr[ele].positionMinx,PlayerArr[ele].positionMiny);
+		 				playDeath = true;
 		 				delete PlayerArr[ele];
 		 			}
 		 		}
@@ -440,29 +484,13 @@ function Play(){
 				}
 				else{
 					$("#player0_"+currentState).remove();
+					playDeath = true;
+					player_death_animation(0,PlayerArr[ele].positionMinx,PlayerArr[ele].positionMiny);
 					delete PlayerArr[ele];
 					}
 			}
 		}
-		// 	//删除被怪物子弹打到的人
-		// for(var elem in BulletArr2)
-		// {
-
-		// 	for(var ele in PlayerArr)
-		// 	{
-		// 		if(PlayerArr[ele].positionMinx + playerWidth > BulletArr2[elem].positionMinx && PlayerArr[ele].positionMiny + playerWidth > BulletArr2[elem].positionMiny && PlayerArr[ele].positionMiny - playerWidth < BulletArr2[elem].positionMiny && PlayerArr[ele].positionMinx - playerWidth < BulletArr2[elem].positionMinx){
-		// 			//remove
-		// 			// PlayerArr[ele].life -= player.harm;
-		// 			$("#bullet_enemy"+elem).remove();
-		// 			delete BulletArr2[elem];
-		// 			$("#player"+ele).remove();
-		// 			delete PlayerArr[ele];
-		// 			}
-		// 	}	
-		// }
-	}	
-		
-	
+}
 	var RecheckDeath = setInterval(checkDeath,20);
 		//每0.2秒-检测出界：player（禁止出界） enemy（消除） bullet（消除）
 		var checkRange = function(){
@@ -592,5 +620,6 @@ var LeftArrow,RightArrow,UpArrow,DownArrow, MouseClick;//记录按键情况
 var MapWidth,MapHeight;
 var mouseposX,mouseposY;
 var angle,keyEvent;
-var keylist = new Array();//记录按键队列
+var playDeath = false;
+// var keylist = new Array();//记录按键队列
 Play();
