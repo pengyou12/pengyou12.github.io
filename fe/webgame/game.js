@@ -1,7 +1,3 @@
-//enemy 构造函数
-//sx,sy 初始位置
-//dx,dy 运行方向
-//type  敌人类型
 function class_Enemy(sx,sy,dx,dy,type)
 {
 	playMap = $("#playBox");
@@ -15,8 +11,16 @@ function class_Enemy(sx,sy,dx,dy,type)
 	this.PosY = sy;
 	this.Type = type;          //enemy类型
 	this.life = 100;
-	this.moveLength = 10;
-
+	this.moveLength = 1;
+	this.enemyState = 1;
+	this.count = 1;
+	this.faceto = 1;
+	if (type == 1)
+		this.picNum = 8;
+	if (type == 2)
+		this.picNum = 8;
+	if (type == 3)
+		this.picNum = 3;
 	this.getPosX = function(){
 		return this.PosX;
 	}
@@ -61,7 +65,11 @@ function class_Bullet(sx,sy,dx,dy,id,type){
 	this.PosY = sy;
 	this.Id = id;
 	this.moveLength = 10;
+	this.count = 1;
+	if (type == 2)
+		this.moveLength = 2;
 	this.Type = type;
+	this.bulletState = 1;
 	this.getPosX = function(){
 		return this.PosX;
 	}
@@ -83,6 +91,7 @@ function class_Bullet(sx,sy,dx,dy,id,type){
 		this.setPos(x, y);
 	}
 }
+
 
 function class_player()
 {
@@ -166,8 +175,8 @@ function player_death_animation(playerID,x,y) {
 			$("#player" + playerID + "_death" + imgID).css('transform', 'rotateY(' + 180 + 'deg) rotate(' + -tempAng + 'deg)');
 		}
 		else{$("#player" + playerID + "_death" + imgID).css('transform', 'rotate(' + tempAng + 'deg)');}
-		$('#player' + playerID + '_death' + imgID)[0].style.left = x + "px";
-		$('#player' + playerID + '_death' + imgID)[0].style.top = y + "px";
+		$('#player' + playerID + '_death' + imgID)[0].style.left = x - 65 / 2 + "px";
+		$('#player' + playerID + '_death' + imgID)[0].style.top = y - 75 / 2 + "px";
 		$('#player' + playerID + '_death' + imgID)[0].style.display = "block";
 		imgID ++;
 	}
@@ -230,7 +239,7 @@ function mouseMove(ev)
 	if(ev)
 	{
 		mouseposX = ev.pageX-50;
-   		mouseposY = ev.pageY-50;
+   		mouseposY = ev.pageY-30;
    		} 
 	var middleX = (player.positionMinx + player.positionMaxx) / 2;
 	var middleY = (player.positionMiny + player.positionMaxy) / 2;
@@ -331,14 +340,17 @@ window.onkeyup = function(e){
 	}
 }
 
-
 //产生0~top的伪随机数
 function RandomInteger(top){
 	return Math.round(Math.random()*top);
 }
 
 function Play(){
+	var d = 5;
+	var h = 10;
 	playMap = $("#playBox"); //游戏地图
+	MapWidth = parseInt(playMap.css("width"));
+	MapHeight = parseInt(playMap.css("height"));
 	var PlayerArr = [];//玩家数组，包括上轮挂掉的
 	PlayerTotal = 0;//玩家总数
 	BulletArr = [];  //子弹数组
@@ -352,6 +364,7 @@ function Play(){
 	currentState = 0;//记录当前切换到第几张图了
 	$('#playBox').append($('<div id = "enemyBox"></div>'));
 	$('#playBox').append($('<div id = "bulletBox"></div>'));
+
 	//设定：
 	//开始：产生 player
 	function playerGenerate(){
@@ -375,66 +388,166 @@ function Play(){
   			}
   		}
   		PlayerTotal++;
-		tempPlayer = new class_player();
-		PlayerArr.push(tempPlayer);
-		$('#playBox').append($('<img id = "player'+(PlayerTotal)+'" style="position:absolute;" src = "http://pengyou12.github.io/icon32.png">'));
-		$('#player'+PlayerTotal)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
-  		$('#player'+PlayerTotal)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
-  		PlayerTotal++;//下标从0开始
+		// tempPlayer = new class_player();
+		// PlayerArr.push(tempPlayer);
+		// $('#playBox').append($('<img id = "player'+(PlayerTotal)+'" style="position:absolute;" src = "http://pengyou12.github.io/icon32.png">'));
+		// $('#player'+PlayerTotal)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
+  // 		$('#player'+PlayerTotal)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
+  // 		PlayerTotal++;//下标从0开始
 	}
 	playerGenerate();//产生两个player
+
 	//每1秒：产生 enemy
 	var enemyGenerate = function(){
-		//随意设了初始值，待改为随机数
-		type = 1;
-		sx = RandomInteger(parseInt(MapWidth));
-		sy = RandomInteger(parseInt(MapHeight));
-		dx = 0.6;
-		dy = 0.6;
+		//clearInterval(ReEnemyGenerate);
+		mapWidth = parseInt(MapWidth);
+		mapHeight = parseInt(MapHeight);
+		sx = RandomInteger(mapWidth);
+		sy = RandomInteger(mapHeight);
+		model = RandomInteger(100);
+		switch (model % 4)
+		{
+			case 0:{
+				sx = 0;
+				ex = mapWidth;
+				ey = mapHeight - sy;
+				break;
+			}
+			case 1:{
+				sy = 0;
+				ey = mapHeight;
+				ex = mapWidth - sx;
+				break;
+			}
+			case 2:{
+				sx = mapWidth;
+				ex = 0;
+				ey = mapHeight - sy;
+				break;
+			}
+			case 3:{
+				sy = mapHeight;
+				ey = 0;
+				ex = mapWidth - sx;
+				break;
+			}
+		}
+		model = RandomInteger(100);
+		switch (model % 3)
+		{
+			case 0:{
+				type = 1;
+				break;
+			}
+			case 1:{
+				type = 2;
+				break;
+			}
+			case 2:{
+				type = 3;
+				break;
+			}
+		}
+		var DX = ex - sx;
+		var DY = ey - sy;
+		temp_dx = DX /Math.sqrt((DX*DX)+(DY*DY));
+		temp_dy = DY /Math.sqrt((DX*DX)+(DY*DY));
+		dx = temp_dx;
+		dy = temp_dy;
 		var e = new class_Enemy(sx,sy,dx,dy,type);
 		EnemyArr.push(e);
-		temp = $("<img style='position:absolute;' src='http://pengyou12.github.io/loge2.png' class='enemy' id='enemy"+EnemyTotal+"'></div>");
+		//确定图片朝向
+		if (type == 1)
+		{
+			if (sx == 0 || (sy == 0 && sx < ex) || (ey == 0 && sx < ex))
+				e.faceto = 1;
+			else
+				e.faceto = 0;
+		}
+		else
+		{
+			if (PlayerArr[0].positionMinx > sx)
+				e.faceto = 1;
+			else
+				e.faceto = 0;
+		}
+		rotate = Math.atan(dy/dx);
+		rotate = rotate * 180 / 3.14159;
+		for (var i = 1; i <= e.picNum*2; i++)
+		{
+			var tem = i;
+			var picName = "";
+			if (type == 1)
+				picName = "'small_moving_frame_0";
+			if (type == 2)
+				picName = "'small_homing_frame_0";
+			if (type == 3)
+				picName = "'big_bad_frame0";
+			$('#enemyBox').append("<img style='position:absolute;' src="+picName+""+tem+".png' class='enemy' id='enemy"+type+"_"+EnemyTotal+"_"+i+"'></img>");
+			if (i == 1 && e.faceto == 0 || i == e.picNum+1 && e.faceto == 1)
+				$("#enemy"+type+"_"+EnemyTotal+"_"+i).css({display:"block"});
+			else
+				$("#enemy"+type+"_"+EnemyTotal+"_"+i).css({display:"none"});
+			$("#enemy"+type+"_"+EnemyTotal+"_"+i)[0].style.left = sx+"px";
+			$("#enemy"+type+"_"+EnemyTotal+"_"+i)[0].style.top = sy+"px";
+			$("#enemy"+type+"_"+EnemyTotal+"_"+i).css('transform', 'rotate('+rotate+'deg)' );
+		}
+		temp = $("<img style='position:absolute;' src='small_moving_frame1.png' class='enemy' id='enemy"+EnemyTotal+"'></img>");
 		$('#enemyBox').append(temp);
-		//画好位置
 		$('#enemy'+EnemyTotal)[0].style.left = sx+"px";
 		$('#enemy'+EnemyTotal)[0].style.top = sy+"px";
+		$('#enemy'+EnemyTotal)[0].style.display = 'none';
+		$('#enemy'+EnemyTotal).css('transform', 'rotate('+rotate+'deg)' );
 		EnemyTotal++;
 	}
 	ReEnemyGenerate = setInterval(enemyGenerate, intervalTime*15);
-	
+
 	//产生子弹
 	//sx,sy初始位置
 	//dx,dy运行方向
 	var bulletGenerate = function(sx,sy,dx,dy,type){
 		var b = new class_Bullet(sx,sy,dx,dy, BulletTotal,type);
-		var middleX = (player.positionMinx + player.positionMaxx) / 2;
-		var middleY = (player.positionMiny + player.positionMaxy) / 2;
-		var tempangle2 = angle;
 		BulletArr.push(b);
 		if (type == 1)
 		{
-			temp = "<img style='position:absolute;' src = 'old_guy_bullet.png'class='bullet' id='bullet"+BulletTotal+"'></div>";
+			temp = "<img style='position:absolute;' src = 'old_guy_bullet.png'class='bullet' id='bullet"+BulletTotal+"'></img>";
 			$('#bulletBox').append(temp);
 			$('#bullet'+BulletTotal)[0].style.left = sx+"px";
 			$('#bullet'+BulletTotal)[0].style.top = sy+"px";
-			if(mouseposX < middleX){
-				tempangle2 += 180;
+			if(mouseposX < player.positionMinx + 65 / 2){
+				angle += 180;
 			}
-			$("#bullet"+BulletTotal).css( 'transform', 'rotate('+tempangle2+'deg)' );
-		}	
+			$("#bullet"+BulletTotal).css( 'transform', 'rotate('+angle+'deg)' );
+		}
 		else
 		{
-			temp = "<div class='bullet' style='left:" + sx + "px;top:" + sy + "px' id='bullet" + "" + BulletTotal +"'></div>";
+			rotate = Math.atan(dy/dx);
+			rotate = rotate * 180 / 3.14159;
+			if (sx > player.positionMinx + 65 / 2){
+				rotate += 180;
+			}
+			for (var i = 1; i <= 3; i++)
+			{
+				$('#bulletBox').append($("<img style='position:absolute;' src='big_bad_bullet_0"+i+".png' class='bullet' id='bullet"+BulletTotal+"_"+i+"'></img>"));
+				if (i == 1)
+					$("#bullet"+BulletTotal+"_"+i).css({display:"block"});
+				else
+					$("#bullet"+BulletTotal+"_"+i).css({display:"none"});
+				$("#bullet"+BulletTotal+"_"+i)[0].style.left = sx+"px";
+				$("#bullet"+BulletTotal+"_"+i)[0].style.top = sy+"px";
+				$("#bullet"+BulletTotal+"_"+i).css('transform', 'rotate('+rotate+'deg)' );
+			}
+			temp = "<img style='position:absolute;' src = 'big_bad_bullet_03.png'class='bullet' id='bullet"+BulletTotal+"'></img>";
 			$('#bulletBox').append(temp);
-
+			$('#bullet'+BulletTotal)[0].style.left = sx+"px";
+			$('#bullet'+BulletTotal)[0].style.top = sy+"px";
+			$('#bullet'+BulletTotal)[0].style.display = "none";
+			$("#bullet"+BulletTotal).css('transform', 'rotate('+rotate+'deg)' );
 		}
 		BulletTotal++;
 	}
 
-	//事件检测:
-		//每0.2秒-检测撞击：player与enemy（game over） bullet与enemey（生命值减少-检测是否死亡）
-	var checkDeath = function(){
-		if(playDeath){return ;}
+		var checkDeath = function(){
 		var enemyWidth = 15;//怪中心到边上的距离
 		var playerWidth = 10;
 		//删除被子弹打中的怪物
@@ -451,8 +564,12 @@ function Play(){
 						EnemyArr[ele].life -= 50;
 						if(EnemyArr[ele].life <= 0)
 						{
+							type =  EnemyArr[ele].Type;
+							num = EnemyArr[ele].picNum*2;
 							$("#enemy"+ele).remove();
 							delete EnemyArr[ele];
+							for (var i = 1; i <= num; i++)
+								$("#enemy"+type+"_"+ele+"_"+i).remove();
 						}
 					}	
 				}
@@ -461,11 +578,10 @@ function Play(){
 			{
 				for(var ele in PlayerArr)
 		 		{
-		 			if(PlayerArr[ele].positionMinx + playerWidth > BulletArr2[elem].positionMinx && PlayerArr[ele].positionMiny + playerWidth > BulletArr2[elem].positionMiny && PlayerArr[ele].positionMiny - playerWidth < BulletArr2[elem].positionMiny && PlayerArr[ele].positionMinx - playerWidth < BulletArr2[elem].positionMinx){
+		 			if(PlayerArr[ele].positionMaxx - d > BulletArr[elem].PosX && PlayerArr[ele].positionMaxy - h > BulletArr[elem].PosY && PlayerArr[ele].positionMiny + h < BulletArr[elem].PosY && PlayerArr[ele].positionMinx + d < BulletArr[elem].PosX){
 		 				//remove
-		 				// PlayerArr[ele].life -= player.harm;
 		 				$("#bullet_enemy"+elem).remove();
-		 				delete BulletArr2[elem];
+		 				delete BulletArr[elem];
 		 				$("#player0_"+currentState).remove();
 		 				player_death_animation(0,PlayerArr[ele].positionMinx,PlayerArr[ele].positionMiny);
 		 				playDeath = true;
@@ -474,97 +590,124 @@ function Play(){
 		 		}
 		 	}	
 		}
-		//删除被怪物撞到的人
+	//删除被怪物撞到的人
 		for(var ele in PlayerArr)
 		{
 			for(var elem in EnemyArr)
 			{
-				if(PlayerArr[ele].positionMaxx < EnemyArr[elem].PosX - enemyWidth || PlayerArr[ele].positionMaxy < EnemyArr[elem].PosY - enemyWidth || EnemyArr[elem].PosX + enemyWidth < PlayerArr[ele].positionMinx || EnemyArr[elem].PosY + enemyWidth < PlayerArr[ele].positionMiny){
+				if(PlayerArr[ele].positionMaxx - d < EnemyArr[elem].PosX - enemyWidth || PlayerArr[ele].positionMaxy - h < EnemyArr[elem].PosY - enemyWidth || EnemyArr[elem].PosX + enemyWidth < PlayerArr[ele].positionMinx + d || EnemyArr[elem].PosY + enemyWidth < PlayerArr[ele].positionMiny + h){
 					;
 				}
 				else{
 					$("#player0_"+currentState).remove();
 					playDeath = true;
+					//alert(player.positionMinx);
 					player_death_animation(0,PlayerArr[ele].positionMinx,PlayerArr[ele].positionMiny);
 					delete PlayerArr[ele];
 					}
 			}
 		}
-}
+	}
 	var RecheckDeath = setInterval(checkDeath,20);
-		//每0.2秒-检测出界：player（禁止出界） enemy（消除） bullet（消除）
-		var checkRange = function(){
-			//监测人物出界
-			for(var elem in PlayerArr)
-			{
-				if (PlayerArr[elem].positionMiny > parseInt(MapHeight) ||  PlayerArr[elem].positionMaxx < 0 || PlayerArr[elem].positionMinx > parseInt(MapWidth) || PlayerArr[elem].positionMaxy < 0 )
-				{
-					//remove 
-					$("#player0_"+currentState).remove();
-					delete PlayerArr[elem];
-					}
-			}
-			//监测怪物出界
-			for(var ele in EnemyArr)
-			{
-				if (EnemyArr[ele].isOut())
-				{	
-					$("#enemy"+ele).remove();
-					delete EnemyArr[ele];
-				}
-			}
-			//监测子弹出界
-				for(var el in BulletArr)
-			{
-				if (BulletArr[el].isOut())
-				{	
-					$("#bullet"+el).remove();
-					delete BulletArr[el];
-				}
-			}
 
+	//每0.2秒-检测出界：player（禁止出界） enemy（消除） bullet（消除）
+	var checkRange = function(){
+		//监测人物出界
+		for(var elem in PlayerArr)
+		{
+			if (PlayerArr[elem].positionMiny > parseInt(MapHeight) ||  PlayerArr[elem].positionMaxx < 0 || PlayerArr[elem].positionMinx > parseInt(MapWidth) || PlayerArr[elem].positionMaxy < 0 )
+			{
+				//remove 
+				$("#player"+elem).remove();
+				delete PlayerArr[elem];
+				}
 		}
-			RecheckRange = setInterval(checkRange,500);
-		//每0.2秒-检测player方向改变：player:键盘方向键按下
-			setInterval(CheckKey,50);
-		//每0.05秒-检测player发射子弹：鼠标左键按下
-		var CheckMouse = function(){
-			if(MouseClick)
+		//监测怪物出界
+		for(var ele in EnemyArr)
+		{
+			if (EnemyArr[ele].isOut())
 			{	
-				// cursor.PosX = mouseposX;
-				// cursor.PosY = mouseposY;
-				var tempWidth = (player.positionMaxx - player.positionMinx) / 2; 
-				var tempHeight = (player.positionMaxy - player.positionMiny) / 2;
-				var middleX = (player.positionMinx + player.positionMaxx) / 2;
-				var middleY = (player.positionMiny + player.positionMaxy) / 2;
-				var DX = mouseposX - middleX;
-				var DY = mouseposY - middleY;
-				var dx1,dy1;
-				dx1 = DX /Math.sqrt((DX*DX)+(DY*DY));
-				dy1 = DY /Math.sqrt((DX*DX)+(DY*DY));
-				DX = dx1;
-				DY = dy1;
-				var tempangle = -angle;
-				if(mouseposX < middleX)
-				{
-					tempangle += 180;
-				}
-				bulletGenerate(middleX + tempWidth * Math.cos(tempangle/180 * 3.14159 - 0.2), middleY - tempWidth * Math.sin(tempangle/180 * 3.14159 - 0.2), DX, DY,1);
-
+				type =  EnemyArr[ele].Type;
+				num = EnemyArr[ele].picNum*2;
+				$("#enemy"+ele).remove();
+				delete EnemyArr[ele];
+				for (var i = 1; i <= num; i++)
+					$("#enemy"+type+"_"+ele+"_"+i).remove();
 			}
 		}
-		var ReCheckMouse = setInterval(CheckMouse,200);
+		//监测子弹出界
+		for(var el in BulletArr)
+		{
+			if (BulletArr[el].isOut())
+			{	
+				$("#bullet"+el).remove();
+				delete BulletArr[el];
+				for (var i = 1; i <= 3; i++)
+					$("#bullet"+el+"_"+i).remove();
+			}
+		}
+	}
+	RecheckRange = setInterval(checkRange,500);	
+
+	//每0.2秒-检测player方向改变：player:键盘方向键按下
+	setInterval(CheckKey,50);
+
+	//每0.05秒-检测player发射子弹：鼠标左键按下
+	var CheckMouse = function(){
+		if(MouseClick)
+		{	
+			// cursor.PosX = mouseposX;
+			// cursor.PosY = mouseposY;
+			var tempWidth = (player.positionMaxx - player.positionMinx) / 2; 
+			var tempHeight = (player.positionMaxy - player.positionMiny) / 2;
+			var middleX = (player.positionMinx + player.positionMaxx) / 2;
+			var middleY = (player.positionMiny + player.positionMaxy) / 2;
+			var DX = mouseposX - middleX;
+			var DY = mouseposY - middleY;
+			var dx1,dy1;
+			dx1 = DX /Math.sqrt((DX*DX)+(DY*DY));
+			dy1 = DY /Math.sqrt((DX*DX)+(DY*DY));
+			DX = dx1;
+			DY = dy1;
+			var tempangle = -angle;
+			if(mouseposX < middleX)
+			{
+				tempangle += 180;
+			}
+			bulletGenerate(middleX + tempWidth * Math.cos(tempangle/180 * 3.14159 - 0.2), middleY - tempWidth * Math.sin(tempangle/180 * 3.14159 - 0.2), DX, DY,1);
+
+		}
+	}
+	var ReCheckMouse = setInterval(CheckMouse,200);
 	//事件进行：
-		//每0.2秒-子弹直线运动
+		//每0.2秒-子弹直线运动	
 		var bulletMove = function(){
 			for (var i in BulletArr){
 				var cursor = BulletArr[i];
+				var state = cursor.bulletState;
 				var newX = cursor.PosX + cursor.DirectX * cursor.moveLength;
 				var newY = cursor.PosY + cursor.DirectY * cursor.moveLength;
 				BulletArr[i].setPos(newX, newY);
-				// $("#bullet"+i).animate({left:""+newX+"px", top:""+newY+"px"}, 10);
 				$("#bullet"+i)[0].style.left = newX + "px";
 				$("#bullet"+i)[0].style.top = newY + "px";
+				if (cursor.Type == 2)
+				{
+					cursor.count = (cursor.count+1) % 2;
+					if (cursor.count == 1)
+					{
+						$("#bullet"+i+"_"+state)[0].style.display = 'none';
+						state = state % 3+1;
+						$("#bullet"+i+"_"+state)[0].style.left = newX + "px";
+						$("#bullet"+i+"_"+state)[0].style.top = newY + "px";
+						$("#bullet"+i+"_"+state)[0].style.display = 'block';
+						cursor.bulletState = state;
+					}
+					else
+					{
+						$("#bullet"+i+"_"+state)[0].style.left = newX + "px";
+						$("#bullet"+i+"_"+state)[0].style.top = newY + "px";
+					}
+				}
 			}
 		}
 		var ReBulletMove = setInterval(bulletMove, intervalTime/15);
@@ -572,52 +715,137 @@ function Play(){
 		//每0.2秒-enemy（1）（3）直线运动
 		var enemyMoveStraight = function(){
 			for (var i in EnemyArr){
-
 				if (EnemyArr[i].Type != 2){
-				var cursor = EnemyArr[i];
-				var newX = cursor.PosX + cursor.DirectX * cursor.moveLength;
-				var newY = cursor.PosY + cursor.DirectY * cursor.moveLength;
-				EnemyArr[i].setPos(newX, newY);
-				$("#enemy"+i).animate({left:""+newX+"px", top:""+newY+"px"}, 10);
+					var cursor = EnemyArr[i];
+					var state = cursor.enemyState;
+					var newX = cursor.PosX + cursor.DirectX * cursor.moveLength;
+					var newY = cursor.PosY + cursor.DirectY * cursor.moveLength;
+					EnemyArr[i].setPos(newX, newY);
+					$("#enemy"+i)[0].style.left = newX+"px";
+					$("#enemy"+i)[0].style.top = newY+"px";
+					var DX = PlayerArr[0].positionMinx+5 - cursor.PosX;
+					var DY = PlayerArr[0].positionMiny+5 - cursor.PosY;
+					rotate = Math.atan(DY/DX);
+					rotate = rotate * 180 / 3.14159;
+					cursor.count = (cursor.count+1) % 2;
+					lastFaceto = cursor.faceto;
+					if (cursor.Type == 3)
+					{
+						if (PlayerArr[0].positionMinx > cursor.PosX)
+							cursor.faceto = 1;
+						else
+							cursor.faceto = 0;
+					}
+					if (cursor.count == 1)
+					{
+						tem = state + lastFaceto * cursor.picNum;
+						$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.display = 'none';
+						state = state % cursor.picNum+1;
+						tem = state + cursor.faceto * cursor.picNum;
+						$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.left = newX + "px";
+						$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.top = newY + "px";
+						$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.display = 'block';
+						if (cursor.Type == 3)
+							$("#enemy"+cursor.Type+"_"+i+"_"+tem).css('transform', 'rotate('+rotate+'deg)' );
+						cursor.enemyState = state;
+					}
+					else
+					{
+						tem = state + lastFaceto * cursor.picNum;
+						$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.display = 'none';
+						tem = state + cursor.faceto * cursor.picNum;
+						$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.left = newX + "px";
+						$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.top = newY + "px";
+						$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.display = 'block';
+						if (cursor.Type == 3)
+							$("#enemy"+cursor.Type+"_"+i+"_"+tem).css('transform', 'rotate('+rotate+'deg)' );
+					}
 				}
 			}
 		}
-		var ReEnemyMoveStraight = setInterval(enemyMoveStraight, intervalTime);
+		var ReEnemyMoveStraight = setInterval(enemyMoveStraight, intervalTime/15);
 
 		//每0.2秒-enemy（2）瞄准player运动
 		var enemyMoveToward = function(){
 			for (var i in EnemyArr)
 				if (EnemyArr[i].Type == 2){
 				var cursor = EnemyArr[i];
-				var DX = player.PosX - cursor.PosX;
-				var DY = player.PosY - cursor.PosY;
-				DX = DX /Math.sqrt((DX*DX)+(DY*DY));
-				DY = DY /Math.sqrt((DX*DX)+(DY*DY));
+				var state = cursor.enemyState;
+				var DX = PlayerArr[0].positionMinx+5 - cursor.PosX;
+				var DY = PlayerArr[0].positionMiny+5 - cursor.PosY;
+				temp_dx = DX /Math.sqrt((DX*DX)+(DY*DY));
+				temp_dy = DY /Math.sqrt((DX*DX)+(DY*DY));
+				DX = temp_dx;
+				DY = temp_dy;
+				cursor.DirectX = DX;
+				cursor.DirectY = DY;
+				rotate = Math.atan(DY/DX);
+				rotate = rotate * 180 / 3.14159;
 				var newX = cursor.PosX + cursor.DirectX * cursor.moveLength;
 				var newY = cursor.PosY + cursor.DirectY * cursor.moveLength;
 				EnemyArr[i].setPos(newX, newY);
-				$("#enemy"+i).animate({left:""+newX+"px", top:""+newY+"px"}, 'fast');
+				$("#enemy"+i)[0].style.left = newX+"px";
+				$("#enemy"+i)[0].style.top = newY+"px";
+				cursor.count = (cursor.count+1) % 2;
+				lastFaceto = cursor.faceto;
+				if (PlayerArr[0].positionMinx > cursor.PosX)
+					cursor.faceto = 1;
+				else
+					cursor.faceto = 0;
+				if (cursor.faceto != lastFaceto)
+				{
+					for (var j = 1; j <= cursor.picNum; j++)
+					{
+						tem = j + lastFaceto * cursor.picNum;
+						$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.display = 'none';
+					}
+				}
+				tem = state + lastFaceto * cursor.picNum;
+				if (cursor.count == 1)
+				{
+					$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.display = 'none';
+					state = state % cursor.picNum+1;
+					tem = state + cursor.faceto * cursor.picNum;
+					$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.left = newX + "px";
+					$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.top = newY + "px";
+					$("#enemy"+cursor.Type+"_"+i+"_"+tem).css('transform', 'rotate('+rotate+'deg)' );
+					$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.display = 'block';
+					cursor.enemyState = state;
+				}
+				else
+				{
+					$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.display = 'none';
+					state = state % cursor.picNum+1;
+					tem = state + cursor.faceto * cursor.picNum;
+					$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.left = newX + "px";
+					$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.top = newY + "px";
+					$("#enemy"+cursor.Type+"_"+i+"_"+tem).css('transform', 'rotate('+rotate+'deg)' );
+					$("#enemy"+cursor.Type+"_"+i+"_"+tem)[0].style.display = 'block';
+				}
 			}
 		}
-		ReEnemyMoveToward = setInterval(enemyMoveStraight, intervalTime);
+		ReEnemyMoveToward = setInterval(enemyMoveToward, intervalTime/15);
 
-		// //每0.4秒-enemy（3） 瞄准player发射子弹
-		// var enemyShootToward = function(){
-		// 	for (var i in EnemyArr)
-		// 		if (EnemyArr[i].Type == 2){
-		// 		var cursor = EnemyArr[i];
-		// 		var DX = player.PosX - cursor.PosX;
-		// 		var DY = player.PosY - cursor.PosY;
-		// 		DX = DX /Math.sqrt((DX*DX)+(DY*DY));
-		// 		DY = DY /Math.sqrt((DX*DX)+(DY*DY));
-		// 		bulletGenerate(cursor.PosX, cursor.PosY, DX, DY,1);
-		// 	}
-		// }
-		// ReEnemyShootToward = setInterval(enemyShootToward, intervalTime*2);
+		//每0.4秒-enemy（3） 瞄准player发射子弹
+		var enemyShootToward = function(){
+			for (var i in EnemyArr)
+				if (EnemyArr[i].Type == 3){
+				var cursor = EnemyArr[i];
+				var DX = PlayerArr[0].positionMinx+5 - cursor.PosX;
+				var DY = PlayerArr[0].positionMiny+5 - cursor.PosY;
+				temp_dx = DX /Math.sqrt((DX*DX)+(DY*DY));
+				temp_dy = DY /Math.sqrt((DX*DX)+(DY*DY));
+				DX = temp_dx;
+				DY = temp_dy;
+				sx = cursor.PosX+42+42*DX;
+				sy = cursor.PosY+47+42*DY;
+				bulletGenerate(sx, sy, DX, DY, 2);
+			}
+		}
+		ReEnemyShootToward = setInterval(enemyShootToward, intervalTime*10);
 }
 
 var LeftArrow,RightArrow,UpArrow,DownArrow, MouseClick;//记录按键情况
-var MapWidth,MapHeight;
 var mouseposX,mouseposY;
 var angle,keyEvent;
 var playDeath = false;
