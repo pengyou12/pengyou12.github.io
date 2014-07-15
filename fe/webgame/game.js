@@ -100,6 +100,8 @@ function class_player()
 	playMap = $("#playBox");
 	MapWidth = playMap.css("width");
 	MapHeight = playMap.css("height");
+	this.MapWidth = parseInt(MapWidth);
+	this.MapHeight = parseInt(MapHeight);
 	this.positionMinx = Math.random() * parseInt(MapWidth);
 	this.positionMiny = Math.random() * parseInt(MapHeight);
 	this.positionMaxx = this.positionMinx + 65;
@@ -127,6 +129,10 @@ function class_player()
 										//LeftArrow = false;
 										this.positionMinx -= this.moveLength;
 										this.positionMaxx -= this.moveLength;
+										if(this.positionMinx < 0){
+											this.positionMinx = 0;
+											this.positionMaxx = 65;
+										}
 									}
 							};
 	this.moveRight = function(){
@@ -135,6 +141,10 @@ function class_player()
 										//RightArrow = false;
 										this.positionMinx += this.moveLength;
 										this.positionMaxx += this.moveLength;
+										if(this.positionMaxx > this.MapWidth){
+											this.positionMaxx = this.MapWidth;
+											this.positionMinx = this.MapWidth - 65;
+										}
 									}
 							};
 	this.moveUp = function(){
@@ -143,6 +153,10 @@ function class_player()
 										//UpArrow = false;
 										this.positionMiny -= this.moveLength;
 										this.positionMaxy -= this.moveLength;
+										if(this.positionMiny < 0){
+											this.positionMiny = 0;
+											this.positionMaxy = 75;
+										}
 									}
 							};															
 	this.moveDown = function(){
@@ -151,7 +165,10 @@ function class_player()
 										//DownArrow = false;
 										this.positionMiny += this.moveLength;
 										this.positionMaxy += this.moveLength;
-										
+										if(this.positionMaxy > this.MapHeight){
+											this.positionMaxy = this.MapHeight;
+											this.positionMiny = this.MapHeight - 75;
+										}
 									}
 									
 							};
@@ -165,7 +182,7 @@ function player_death_animation(playerID,x,y) {
 		if(imgID >= 7 )
 		{
 			delete PlayerArr[ele];
-			clearInterval(check_death_aniimation);
+			clearInterval(check_death_animation);
 			return;
 		}
 		var tempAng;
@@ -180,7 +197,7 @@ function player_death_animation(playerID,x,y) {
 		$('#player' + playerID + '_death' + imgID)[0].style.display = "block";
 		imgID ++;
 	}
-	check_death_aniimation = setInterval(death_animation,100);
+	check_death_animation = setInterval(death_animation,100);
 }
 function CheckKey() {
 	if(playDeath){return;}//人物死亡
@@ -346,7 +363,7 @@ function RandomInteger(top){
 }
 
 function Play(){
-	var d = 5;
+	var d = 10;
 	var h = 10;
 	playMap = $("#playBox"); //游戏地图
 	MapWidth = parseInt(playMap.css("width"));
@@ -613,15 +630,15 @@ function Play(){
 	//每0.2秒-检测出界：player（禁止出界） enemy（消除） bullet（消除）
 	var checkRange = function(){
 		//监测人物出界
-		for(var elem in PlayerArr)
-		{
-			if (PlayerArr[elem].positionMiny > parseInt(MapHeight) ||  PlayerArr[elem].positionMaxx < 0 || PlayerArr[elem].positionMinx > parseInt(MapWidth) || PlayerArr[elem].positionMaxy < 0 )
-			{
-				//remove 
-				$("#player"+elem).remove();
-				delete PlayerArr[elem];
-				}
-		}
+		// for(var elem in PlayerArr)
+		// {
+		// 	if (PlayerArr[elem].positionMiny > parseInt(MapHeight) ||  PlayerArr[elem].positionMaxx < 0 || PlayerArr[elem].positionMinx > parseInt(MapWidth) || PlayerArr[elem].positionMaxy < 0 )
+		// 	{
+		// 		//remove 
+		// 		$("#player"+elem).remove();
+		// 		delete PlayerArr[elem];
+		// 		}
+		// }
 		//监测怪物出界
 		for(var ele in EnemyArr)
 		{
