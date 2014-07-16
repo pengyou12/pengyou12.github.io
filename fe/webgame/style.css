@@ -1,4 +1,4 @@
-body, html{
+﻿body, html{
 	
 	height: 100%;
 	margin: 0;
@@ -6,6 +6,52 @@ body, html{
 	border: none;
 	display: block;
 	overflow: scroll;
+	background-color: #222222;
+}
+
+#welcome{
+	margin:50px;
+	height: 530px;
+	width: 1200px;
+	background-color:#4EC6E4;
+	float:left;
+	z-index: 1;
+	zoom:1;
+}
+
+#start{
+	position:absolute;
+	top:250px;
+	left:500px;
+	background: #fff;
+	padding-left:50px;
+	padding-right:50px;
+	padding-top:10px;
+	padding-bottom:10px;
+	font-family: "微软雅黑";
+	font-size:3em;
+	color:#4EC6E4;
+	font-weight: 900;
+	border-width:1px;
+	border-style:solid;
+	border-radius:50px;
+	border-color:#b3b3b3;
+	opacity: 0.8;
+	text-decoration: none;
+}
+
+#start:hover{
+	opacity: 1;
+}
+
+#leading{
+	position: absolute;
+	bottom:100px;
+	left:100px;
+	font-family: "微软雅黑";
+	color:#fff;
+	font-size:2em;
+	font-weight: 900;
 }
 
 #mainWrapper{
@@ -14,10 +60,11 @@ body, html{
 	position:absolute;
 	margin: 0;
 	background-color: #222222;
+	display: none;
 }
 
 #playBox{
-	background: url("http://pengyou12.github.io/back.jpg");
+	background: url("back.jpg");
 	position:absolute;
 	top:50px;
 	left:50px;
@@ -32,11 +79,9 @@ body, html{
 	position:absolute;
 	display: block;
 	width:100px;
-	/*height:550px;*/
 	background-color:#100100100;
 	left:50px;
 	top:50px;
-/*	font-weight: 900;*/
 	border-width:1px;
 	border-style:solid;
 	border-radius:20px;

@@ -9,9 +9,22 @@ function class_Enemy(sx,sy,dx,dy,type)
 	this.DirectY = dy;
 	this.PosX = sx;
 	this.PosY = sy;
-	this.Type = type;          //enemy类型
+	
 	this.life = 100;
 	this.moveLength = 1;
+	if (currentLevel <= 2)
+		type = 1;
+	if (currentLevel <= 6 && type == 3)
+		type = 1;
+	if (currentLevel > 6)
+		this.life = 150;
+	if (currentLevel > 18)
+		this.life = 200;
+	if (currentLevel > 10)
+		this.moveLength = 1.5;
+	if (currentLevel > 20)
+		this.moveLength = 2;
+	this.Type = type;          //enemy类型
 	this.enemyState = 1;
 	this.count = 1;
 	this.faceto = 1;
@@ -96,6 +109,7 @@ function class_Bullet(sx,sy,dx,dy,id,type){
 function class_player()
 {
 	//"use strict";
+	imgID = 1;
 	playMap = $("#playBox");
 	MapWidth = playMap.css("width");
 	MapHeight = playMap.css("height");
@@ -178,13 +192,12 @@ function class_player()
 
 function player_death_animation(playerID,x,y) {
 	function death_animation() {
-		if(testflag){alert(imgID);}
 		if (imgID > 1) {
 		$('#player' + playerID + '_death' + (imgID - 1))[0].style.display = "none";
 		}
 		if(imgID >= 7 )
 		{
-			//delete PlayerArr[ele];
+			delete PlayerArr[ele];
 			clearInterval(check_death_animation);
 			return;
 		}
@@ -314,12 +327,12 @@ window.onkeydown = function (e)
 {
 	if(window.event) // IE
 	{
-	keynum = e.keyCode
+		keynum = e.keyCode
 	}
-else if(e.which) // Netscape/Firefox/Opera
+		else if(e.which) // Netscape/Firefox/Opera
 	{
-	keynum = e.which
-}	
+		keynum = e.which
+	}	
 	if(playDeath)
 	{
 		if(keynum == 32 && (!ResetGameState))
@@ -331,7 +344,7 @@ else if(e.which) // Netscape/Firefox/Opera
 		return;
 	}
 
-if (keynum == 65) {
+	if (keynum == 65) {
 		LeftArrow = true;
 		//player.moveLeft();
 	} else if (keynum == 87) {
@@ -376,6 +389,7 @@ if (keynum == 65) {
 		}
 	}
 }
+
 window.onkeyup = function(e){
 	var keynum;
 	if(window.event) // IE
@@ -482,8 +496,8 @@ function drawLevelBox(text)
 
 	$('#levelBox')[0].innerHTML = text;
 }
+
 function Play(){
-	imgID = 1;
 	var d = 10;
 	var h = 10;
 	playMap = $("#playBox"); //游戏地图
@@ -502,41 +516,37 @@ function Play(){
 	currentState = 0;//记录当前切换到第几张图了
 	$('#playBox').append($('<div id = "enemyBox"></div>'));
 	$('#playBox').append($('<div id = "bulletBox"></div>'));
+
 	//设定：
 	//开始：产生 player
 	function playerGenerate(){
+		var tempPlayer;
 		//产生当前的player
 		player = new class_player();
 		PlayerArr.push(player);
 		for(var i = 0; i <7;i++){
 			if(!i){
-				$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" class="player" style="position:absolute;display:block" src = "doom_guy.png">'));
+				$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:block" src = "img/doom_guy.png">'));
 				$('#player'+PlayerTotal+'_'+i)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
   				$('#player'+PlayerTotal+'_'+i)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
 			}
 			else{
-			$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:none" class="player" src = "doom_guy_frame'+i+'.png">'));
+			$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:none" src = "img/doom_guy_frame'+i+'.png">'));
 			$('#player'+PlayerTotal+'_'+i)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
   			$('#player'+PlayerTotal+'_'+i)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
-  			$('#playBox').append($('<img id = "player'+PlayerTotal+'_death'+i+'" style="position:absolute;display:none" class="player" src = "doom_death_frame'+i+'.png">'));
+  			$('#playBox').append($('<img id = "player'+PlayerTotal+'_death'+i+'" style="position:absolute;display:none" src = "img/doom_death_frame'+i+'.png">'));
 			$('#player'+PlayerTotal+'_death'+i)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
   			$('#player'+PlayerTotal+'_death'+i)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
   			}
   		}
   		PlayerTotal++;
-		// tempPlayer = new class_player();
-		// PlayerArr.push(tempPlayer);
-		// $('#playBox').append($('<img id = "player'+(PlayerTotal)+'" style="position:absolute;" src = "http://pengyou12.github.io/icon32.png">'));
-		// $('#player'+PlayerTotal)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
-  // 		$('#player'+PlayerTotal)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
-  // 		PlayerTotal++;//下标从0开始
 	}
-	playerGenerate();//产生player
+	playerGenerate();//产生两个player
 
 	//每1秒：产生 enemy
 	var enemyGenerate = function(){
-		//clearInterval(ReEnemyGenerate);
 		if(ResetGameState){return;}
+		//clearInterval(ReEnemyGenerate);
 		mapWidth = parseInt(MapWidth);
 		mapHeight = parseInt(MapHeight);
 		sx = RandomInteger(mapWidth);
@@ -593,6 +603,7 @@ function Play(){
 		dy = temp_dy;
 		var e = new class_Enemy(sx,sy,dx,dy,type);
 		EnemyArr.push(e);
+		type = e.Type;
 		//确定图片朝向
 		if (type == 1)
 		{
@@ -615,11 +626,11 @@ function Play(){
 			var tem = i;
 			var picName = "";
 			if (type == 1)
-				picName = "'small_moving_frame_0";
+				picName = "'img/small_moving_frame_0";
 			if (type == 2)
-				picName = "'small_homing_frame_0";
+				picName = "'img/small_homing_frame_0";
 			if (type == 3)
-				picName = "'big_bad_frame0";
+				picName = "'img/big_bad_frame0";
 			$('#enemyBox').append("<img style='position:absolute;' src="+picName+""+tem+".png' class='enemy' id='enemy"+type+"_"+EnemyTotal+"_"+i+"'></img>");
 			if (i == 1 && e.faceto == 0 || i == e.picNum+1 && e.faceto == 1)
 				$("#enemy"+type+"_"+EnemyTotal+"_"+i).css({display:"block"});
@@ -631,10 +642,10 @@ function Play(){
 		}
 		for (var i = 1; i <= 6; i++)
 		{
-			$('#enemyBox').append($("<img style='position:absolute;' src='doom_splat_frame"+i+".png' id='boom"+EnemyTotal+"_"+i+"'></img>"));
+			$('#enemyBox').append($("<img style='position:absolute; display:'none';'src='img/doom_splat_frame"+i+".png' id='boom"+EnemyTotal+"_"+i+"'></img>"));
 			$('#boom'+EnemyTotal+"_"+i)[0].style.display = 'none';
 		}
-		temp = $("<img style='position:absolute;' src='small_moving_frame1.png' class='enemy' id='enemy"+EnemyTotal+"'></img>");
+		temp = $("<img style='position:absolute;' src='img/small_moving_frame1.png' class='enemy' id='enemy"+EnemyTotal+"'></img>");
 		$('#enemyBox').append(temp);
 		$('#enemy'+EnemyTotal)[0].style.left = sx+"px";
 		$('#enemy'+EnemyTotal)[0].style.top = sy+"px";
@@ -642,7 +653,16 @@ function Play(){
 		$('#enemy'+EnemyTotal).css('transform', 'rotate('+rotate+'deg)' );
 		EnemyTotal++;
 	}
-	ReEnemyGenerate = setInterval(enemyGenerate, intervalTime * 25);
+	var MultipleGenerate = function(){
+		if(ResetGameState){return;}
+		for (var i = 1; i <= currentLevel; i++)
+		{
+			enemyGenerate();
+			if (i > currentLevel/4)
+				break;
+		}
+	}
+	ReEnemyGenerate = setInterval(MultipleGenerate, intervalTime * 5);
 
 	//产生子弹
 	//sx,sy初始位置
@@ -653,7 +673,7 @@ function Play(){
 		BulletArr.push(b);
 		if (type == 1)
 		{
-			temp = "<img style='position:absolute;' src = 'old_guy_bullet.png'class='bullet' id='bullet"+BulletTotal+"'></img>";
+			temp = "<img style='position:absolute;' src = 'img/old_guy_bullet.png'class='bullet' id='bullet"+BulletTotal+"'></img>";
 			$('#bulletBox').append(temp);
 			$('#bullet'+BulletTotal)[0].style.left = sx+"px";
 			$('#bullet'+BulletTotal)[0].style.top = sy+"px";
@@ -673,7 +693,7 @@ function Play(){
 			}
 			for (var i = 1; i <= 3; i++)
 			{
-				$('#bulletBox').append($("<img style='position:absolute;' src='big_bad_bullet_0"+i+".png' class='bullet' id='bullet"+BulletTotal+"_"+i+"'></img>"));
+				$('#bulletBox').append($("<img style='position:absolute;' src='img/big_bad_bullet_0"+i+".png' class='bullet' id='bullet"+BulletTotal+"_"+i+"'></img>"));
 				if (i == 1)
 					$("#bullet"+BulletTotal+"_"+i).css({display:"block"});
 				else
@@ -682,7 +702,7 @@ function Play(){
 				$("#bullet"+BulletTotal+"_"+i)[0].style.top = sy+"px";
 				$("#bullet"+BulletTotal+"_"+i).css('transform', 'rotate('+rotate+'deg)' );
 			}
-			temp = "<img style='position:absolute;' src = 'big_bad_bullet_03.png'class='bullet' id='bullet"+BulletTotal+"'></img>";
+			temp = "<img style='position:absolute;' src = 'img/big_bad_bullet_03.png'class='bullet' id='bullet"+BulletTotal+"'></img>";
 			$('#bulletBox').append(temp);
 			$('#bullet'+BulletTotal)[0].style.left = sx+"px";
 			$('#bullet'+BulletTotal)[0].style.top = sy+"px";
@@ -719,12 +739,11 @@ function Play(){
 		else
 			t= intervalTime/3;
 		var temp = setInterval(Booming, t);
-		ReBooming = temp;
 	}
 
 		var checkDeath = function(){
-		//删除被子弹打中的怪物
 		if(ResetGameState){return;}
+		//删除被子弹打中的怪物
 		for(var elem in BulletArr)
 		{
 			if (BulletArr[elem].Type == 1){
@@ -780,6 +799,7 @@ function Play(){
 						EnemyArr[ele].life -= 50;
 						if(EnemyArr[ele].life <= 0)
 						{
+							$('#explosion')[0].play();
 							type =  EnemyArr[ele].Type;
 							num = EnemyArr[ele].picNum*2;
 							BoomAnimate(ele, EnemyArr[ele].PosX,EnemyArr[ele].PosY, 6);
@@ -789,9 +809,8 @@ function Play(){
 							for (var i = 1; i <= num; i++)
 								$("#enemy"+type+"_"+ele+"_"+i).remove();
 						}
-						else{
+						else
 							BoomAnimate(ele, EnemyArr[ele].PosX,EnemyArr[ele].PosY, 1);
-						}
 					}	
 				}
 			}
@@ -806,6 +825,7 @@ function Play(){
 		 				$("#player0_"+currentState).remove();
 		 				player_death_animation(0,PlayerArr[ele].positionMinx,PlayerArr[ele].positionMiny);
 		 				playDeath = true;
+		 				$("#death")[0].play();
 		 				delete PlayerArr[ele];
 		 			}
 		 		}
@@ -825,15 +845,17 @@ function Play(){
 					playDeath = true;
 					//alert(player.positionMinx);
 					player_death_animation(0,PlayerArr[ele].positionMinx,PlayerArr[ele].positionMiny);
+					$("#death")[0].play();
 					delete PlayerArr[ele];
 					}
 			}
 		}
 	}
-	RecheckDeath = setInterval(checkDeath,20);
+	var RecheckDeath = setInterval(checkDeath,20);
 
 	//每0.2秒-检测出界：player（禁止出界） enemy（消除） bullet（消除）
 	var checkRange = function(){
+		if(ResetGameState){return;}
 		//监测人物出界
 		// for(var elem in PlayerArr)
 		// {
@@ -845,7 +867,6 @@ function Play(){
 		// 		}
 		// }
 		//监测怪物出界
-		if(ResetGameState){return;}
 		for(var ele in EnemyArr)
 		{
 			if (EnemyArr[ele].isOut())
@@ -883,6 +904,7 @@ function Play(){
 			singleClick = false;
 			// cursor.PosX = mouseposX;
 			// cursor.PosY = mouseposY;
+			$("#playerFire")[0].play();
 			var tempWidth = (player.positionMaxx - player.positionMinx) / 2; 
 			var tempHeight = (player.positionMaxy - player.positionMiny) / 2;
 			var middleX = (player.positionMinx + player.positionMaxx) / 2;
@@ -1090,7 +1112,7 @@ function Play(){
 		}
 		ReEnemyShootToward = setInterval(enemyShootToward, intervalTime*10);
 
-		ReLevelSystem = setInterval(levelSystem, 100);
+		ReLevelSystem = setInterval(levelSystem,100);
 
 		function ResetGame() {
 			if (ResetGameState) {
@@ -1123,9 +1145,6 @@ function Play(){
 var LeftArrow,RightArrow,UpArrow,DownArrow, MouseClick;//记录按键情况
 var mouseposX,mouseposY;
 var angle,keyEvent;
-var LevelUpOnShow = false;
-var LevelUpRemainder = true;
-var LevelShow = true;
 var playDeath = false;
 var singleClick = false;
 var killEnemyCount = 0;
@@ -1133,4 +1152,22 @@ var currentLevel = 1;
 var ResetGameState = false;
 var testflag = false;
 var ReBooming;
-Play();
+var LevelUpOnShow = false;
+var LevelUpRemainder = true;
+var LevelShow = true;
+
+$(document).ready(function() {
+  $("#welcome").click(function(){
+    $("#welcome").fadeOut('slow', function(){
+    	$("#levelBox").fadeIn('slow');
+      	$("#welcome").hide();
+      	$('#mainWrapper').fadeIn('slow', function(){
+      		//$('body').children('div').eq(0).before("<embed src='1.mp3' hidden='true' autostart='true' loop='true'>" );
+      		//$('#music')[0].play();
+      		//$("#music")[0].src="http://down1.cnmo.com/cnmo/d1/%BF%A8%C5%A9canonind.mp3";
+		$('#BGM')[0].play();
+      	Play();
+      });
+    });
+  })
+})

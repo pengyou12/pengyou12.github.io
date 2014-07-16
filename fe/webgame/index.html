@@ -7,13 +7,23 @@
   <title>Game</title>
 </head>
 <body onselectstart="return false;">
+
+  <div id="welcome">
+    <div id="leading">游戏方法：W/A/S/D移动，鼠标左键发射子弹</div>
+    <a href="#" id="start">开始游戏</a>
+  </div>
   <div style="cursor:url(crosshair.png),auto;"  id="mainWrapper" onMouseDown="MouseDown(event);" onMouseUp="MouseUp();" onMouseMove="mouseMove(event);">
   	<div id="playBox">
   	<!-- add game object here -->
   	</div>
   </div>
- <div id ="levelBox" onclick="$('#levelBox').toggle();"></div>
+  <div id ="levelBox"></div>
+  <audio id="BGM" src="sfx/BGM.mp3" loop="loop">
+  <audio id="playerFire" src="sfx/player_fire_2.wav">
+  <audio id="explosion" src="sfx/small_explosion.wav">
+  <audio id="death" src="sfx/big_explosion.wav">
   <script langeuage="javascript"  src="game.js">
   </script>
+
 </body>
 </html>
