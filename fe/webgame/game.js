@@ -16,14 +16,8 @@ function class_Enemy(sx,sy,dx,dy,type)
 		type = 1;
 	if (currentLevel <= 6 && type == 3)
 		type = 1;
-	if (currentLevel > 6)
-		this.life = 150;
-	if (currentLevel > 18)
-		this.life = 200;
 	if (currentLevel > 10)
-		this.moveLength = 1.5;
-	if (currentLevel > 20)
-		this.moveLength = 2;
+		this.life = 150;
 	this.Type = type;          //enemy类型
 	this.enemyState = 1;
 	this.count = 1;
@@ -658,7 +652,7 @@ function Play(){
 		for (var i = 1; i <= currentLevel; i++)
 		{
 			enemyGenerate();
-			if (i > currentLevel/4)
+			if (i > currentLevel/12)
 				break;
 		}
 	}
