@@ -437,7 +437,7 @@ function levelSystem(){
 	else{
 			text = "等级："+currentLevel+"<br>"+"差"+(currentLevel - killEnemyCount)+"个升级<br>";
 	}
-	if(currentLevel == 2 && LevelUpRemainder)
+	if(currentLevel == 6 && LevelUpRemainder)
 	{
 		LevelUpOnShow = true;
 		text = "恭喜你解锁散弹效果，按q键控制开关";
@@ -452,7 +452,7 @@ function levelSystem(){
 		player.bulletType3 = true;
 		LevelUpRemainder = false;
 	} 
-	else if (currentLevel == 4 && LevelUpRemainder) {
+	else if (currentLevel == 11 && LevelUpRemainder) {
 		LevelUpOnShow =true;
 		text = "恭喜你解锁爆裂弹弹效果，按e键控制开关";
 		drawLevelBox(text);
@@ -520,7 +520,7 @@ function Play(){
 		PlayerArr.push(player);
 		for(var i = 0; i <7;i++){
 			if(!i){
-				$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:block" src = "img/doom_guy.png">'));
+				$('#playBox').append($('<img id = "player'+PlayerTotal+'_'+i+'" style="position:absolute;display:none" src = "img/doom_guy.png">'));
 				$('#player'+PlayerTotal+'_'+i)[0].style.left = PlayerArr[PlayerTotal].positionMinx + "px";
   				$('#player'+PlayerTotal+'_'+i)[0].style.top = PlayerArr[PlayerTotal].positionMiny + "px";
 			}
@@ -536,7 +536,7 @@ function Play(){
   		PlayerTotal++;
 	}
 	playerGenerate();//产生两个player
-
+	$('#player'+0+'_'+0)[0].style.display = "block";
 	//每1秒：产生 enemy
 	var enemyGenerate = function(){
 		if(ResetGameState){return;}
@@ -1128,9 +1128,10 @@ function Play(){
 			$(".bullet").remove();
 			$(".enemy").remove();
 			$(".player").remove();
+			playDeath = false;
 			playerGenerate();
 			ResetGameState = false;
-			playDeath = false;
+			$('#player'+0+'_'+0)[0].style.display = "block";
 			}
 		}
 		Replay = setInterval(ResetGame,100);
