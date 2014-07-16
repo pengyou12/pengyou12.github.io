@@ -1,0 +1,19 @@
+﻿<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <title>Game</title>
+</head>
+<body onselectstart="return false;">
+  <div style="cursor:url(crosshair.png),auto;"  id="mainWrapper" onMouseDown="MouseDown(event);" onMouseUp="MouseUp();" onMouseMove="mouseMove(event);">
+  	<div id="playBox">
+  	<!-- add game object here -->
+  	</div>
+  </div>
+ <div id ="levelBox" onclick="$('#levelBox').toggle();"></div>
+  <script langeuage="javascript"  src="game.js">
+  </script>
+</body>
+</html>

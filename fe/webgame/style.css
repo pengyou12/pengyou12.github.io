@@ -1,0 +1,50 @@
+body, html{
+	
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	display: block;
+	overflow: scroll;
+}
+
+#mainWrapper{
+	height:100%;
+	width:100%;
+	position:absolute;
+	margin: 0;
+	background-color: #222222;
+}
+
+#playBox{
+	background: url("http://pengyou12.github.io/back.jpg");
+	position:absolute;
+	top:50px;
+	left:50px;
+	height:550px;
+	width:1200px;
+	background-color: #fff;
+	overflow: hidden;
+}
+#levelBox{
+	font-family: "微软雅黑";
+	font-size:1em;
+	position:absolute;
+	display: block;
+	width:100px;
+	/*height:550px;*/
+	background-color:#100100100;
+	left:50px;
+	top:50px;
+/*	font-weight: 900;*/
+	border-width:1px;
+	border-style:solid;
+	border-radius:20px;
+	border-color:#b3b3b3;
+	opacity: 0.5; 
+}
+.bullet{
+}
+
+.enemy{
+}
