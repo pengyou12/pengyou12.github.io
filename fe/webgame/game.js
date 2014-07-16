@@ -16,15 +16,9 @@ function class_Enemy(sx,sy,dx,dy,type)
 		type = 1;
 	if (currentLevel <= 6 && type == 3)
 		type = 1;
-	if (currentLevel > 6)
+	if (currentLevel > 10)
 		this.life = 150;
-	if (currentLevel > 15)
-		this.life = 200;
-	if (currentLevel > 20)
-		this.life = 250;
 	this.Type = type;          //enemy类型
-	if (type == 3)
-		this.life *= 2;
 	this.enemyState = 1;
 	this.count = 1;
 	this.faceto = 1;
@@ -337,10 +331,6 @@ window.onkeydown = function (e)
 	{
 		if(keynum == 32 && (!ResetGameState))
 		{
-			$("#hint").fadeOut('slow', function(){
-				$("#mainWrapper").fadeIn('slow');
-			});
-			// setTimeout("ResetGameState = true;",1000);
 			ResetGameState = true;
 			testflag = true;
 		}
@@ -546,7 +536,6 @@ function Play(){
 	}
 	playerGenerate();//产生两个player
 	$('#player'+0+'_'+0)[0].style.display = "block";
-
 	//每1秒：产生 enemy
 	var enemyGenerate = function(){
 		if(ResetGameState){return;}
@@ -760,7 +749,26 @@ function Play(){
 						//remove
 						// EnemyArr[ele].life -= player.harm;
 						$("#bullet"+elem).remove();
-						if(player.bulletType1){//爆裂弹效果
+						if(player.bulletType2){//反弹爆裂弹效果
+							var changeDeg = 0.26;
+							var moveLength = 50;
+							var DX1,DX2,DY1,DY2,originDeg,DX,DY;
+							DX = BulletArr[elem].DirectX;
+							DY = BulletArr[elem].DirectY;
+							originDeg = Math.acos(BulletArr[elem].DirectX);
+							if(BulletArr[elem].DirectY < 0)
+							{
+								originDeg = -originDeg;
+							}
+							DX1 = Math.cos(originDeg + changeDeg);
+							DX2 = Math.cos(originDeg - changeDeg);
+							DY1 = Math.sin(originDeg + changeDeg);
+							DY2 = Math.sin(originDeg - changeDeg);
+							bulletGenerate(BulletArr[elem].PosX-moveLength*DX,BulletArr[elem].PosY - moveLength * DY,-BulletArr[elem].DirectX,-BulletArr[elem].DirectY,1);
+							bulletGenerate(BulletArr[elem].PosX-moveLength*DX,BulletArr[elem].PosY - moveLength * DY,-DX1,-DY1,1);
+							bulletGenerate(BulletArr[elem].PosX-moveLength*DX,BulletArr[elem].PosY - moveLength * DY,-DX2,-DY2,1);
+						}
+						else if(player.bulletType1){//爆裂弹效果
 							var changeDeg = 0.26;
 							var moveLength = 50;
 							var DX1,DX2,DY1,DY2,originDeg,DX,DY;
@@ -784,25 +792,6 @@ function Play(){
 						EnemyArr[ele].life -= 50;
 						if(EnemyArr[ele].life <= 0)
 						{
-							if(player.bulletType2){//反弹爆裂弹效果
-							var changeDeg = 0.26;
-							var moveLength = 50;
-							var DX1,DX2,DY1,DY2,originDeg,DX,DY;
-							DX = BulletArr[elem].DirectX;
-							DY = BulletArr[elem].DirectY;
-							originDeg = Math.acos(BulletArr[elem].DirectX);
-							if(BulletArr[elem].DirectY < 0)
-							{
-								originDeg = -originDeg;
-							}
-							DX1 = Math.cos(originDeg + changeDeg);
-							DX2 = Math.cos(originDeg - changeDeg);
-							DY1 = Math.sin(originDeg + changeDeg);
-							DY2 = Math.sin(originDeg - changeDeg);
-							bulletGenerate(BulletArr[elem].PosX-moveLength*DX,BulletArr[elem].PosY - moveLength * DY,-BulletArr[elem].DirectX,-BulletArr[elem].DirectY,1);
-							bulletGenerate(BulletArr[elem].PosX-moveLength*DX,BulletArr[elem].PosY - moveLength * DY,-DX1,-DY1,1);
-							bulletGenerate(BulletArr[elem].PosX-moveLength*DX,BulletArr[elem].PosY - moveLength * DY,-DX2,-DY2,1);
-						}
 							$('#explosion')[0].play();
 							type =  EnemyArr[ele].Type;
 							num = EnemyArr[ele].picNum*2;
@@ -829,9 +818,6 @@ function Play(){
 		 				$("#player0_"+currentState).remove();
 		 				player_death_animation(0,PlayerArr[ele].positionMinx,PlayerArr[ele].positionMiny);
 		 				playDeath = true;
-		 				$("#hint").fadeIn('slow', function(){
-							$("#mainWrapper").fadeOut('slow');
-						});
 		 				$("#death")[0].play();
 		 				delete PlayerArr[ele];
 		 			}
@@ -852,8 +838,6 @@ function Play(){
 					playDeath = true;
 					//alert(player.positionMinx);
 					player_death_animation(0,PlayerArr[ele].positionMinx,PlayerArr[ele].positionMiny);
-					$("#hint").css({display:'block'});
-		 			$("#mainWrapper").css({display:'none'});
 					$("#death")[0].play();
 					delete PlayerArr[ele];
 					}
@@ -1125,7 +1109,6 @@ function Play(){
 
 		function ResetGame() {
 			if (ResetGameState) {
-			//$("#hint").css({display:'block'});
 			clearInterval(check_death_animation);
 			clearInterval(ReBooming);
 			imgID = 1;
@@ -1144,9 +1127,9 @@ function Play(){
 			$(".bullet").remove();
 			$(".enemy").remove();
 			$(".player").remove();
+			playDeath = false;
 			playerGenerate();
 			ResetGameState = false;
-			playDeath = false;
 			$('#player'+0+'_'+0)[0].style.display = "block";
 			}
 		}

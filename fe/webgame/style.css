@@ -19,34 +19,6 @@
 	zoom:1;
 }
 
-#hint{
-	margin:50px;
-	height: 530px;
-	width: 1200px;
-	background:url("img/back.jpg");
-	float:left;
-	zoom:1;
-	z-index:1;
-	display:none;
-}
-
-#GG{
-	position:absolute;
-	top:250px;
-	left:400px;
-	background: transparent;
-	padding-left:50px;
-	padding-right:50px;
-	padding-top:10px;
-	padding-bottom:10px;
-	font-family: "微软雅黑";
-	font-size:3em;
-	color:#8896CC;
-	font-weight: 900;
-	opacity: 0.8;
-	text-decoration: none;
-}
-
 #start{
 	position:absolute;
 	top:250px;
