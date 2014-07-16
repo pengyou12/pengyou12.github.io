@@ -331,7 +331,6 @@ window.onkeydown = function (e)
 	{
 		if(keynum == 32 && (!ResetGameState))
 		{
-			// setTimeout("ResetGameState = true;",1000);
 			ResetGameState = true;
 			testflag = true;
 		}
