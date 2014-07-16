@@ -12,13 +12,16 @@
     <div id="leading">游戏方法：W/A/S/D移动，F打开信息面板，鼠标左键发射子弹</div>
     <a href="#" id="start">开始游戏</a>
   </div>
+  <div id="hint">
+    <div id="GG">请按空格重新开始</div>
+  </div>
   <div style="cursor:url('img/crosshair.png'),auto;"  id="mainWrapper" onMouseDown="MouseDown(event);" onMouseUp="MouseUp();" onMouseMove="mouseMove(event);">
   	<div id="playBox">
   	<!-- add game object here -->
   	</div>
   </div>
   <div id ="levelBox"></div>
-  <audio id="BGM" src="sfx/BGM.mp3" loop="loop">
+  <audio id="BGM2" src="sfx/BGM2.mp3" loop="loop">
   <audio id="playerFire" src="sfx/player_fire_2.wav">
   <audio id="explosion" src="sfx/small_explosion.wav">
   <audio id="death" src="sfx/big_explosion.wav">
