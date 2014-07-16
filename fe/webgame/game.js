@@ -642,7 +642,7 @@ function Play(){
 		}
 		for (var i = 1; i <= 6; i++)
 		{
-			$('#enemyBox').append($("<img style='position:absolute; display:'none';'src='img/doom_splat_frame"+i+".png' id='boom"+EnemyTotal+"_"+i+"'></img>"));
+			$('#enemyBox').append($("<img style='position:absolute;display:none' src='img/doom_splat_frame"+i+".png' id='boom"+EnemyTotal+"_"+i+"'></img>"));
 			$('#boom'+EnemyTotal+"_"+i)[0].style.display = 'none';
 		}
 		temp = $("<img style='position:absolute;' src='img/small_moving_frame1.png' class='enemy' id='enemy"+EnemyTotal+"'></img>");
@@ -1162,9 +1162,6 @@ $(document).ready(function() {
     	$("#levelBox").fadeIn('slow');
       	$("#welcome").hide();
       	$('#mainWrapper').fadeIn('slow', function(){
-      		//$('body').children('div').eq(0).before("<embed src='1.mp3' hidden='true' autostart='true' loop='true'>" );
-      		//$('#music')[0].play();
-      		//$("#music")[0].src="http://down1.cnmo.com/cnmo/d1/%BF%A8%C5%A9canonind.mp3";
 		$('#BGM')[0].play();
       	Play();
       });
