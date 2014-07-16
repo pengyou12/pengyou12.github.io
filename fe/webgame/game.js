@@ -80,7 +80,7 @@ function class_Bullet(sx,sy,dx,dy,id,type){
 	this.moveLength = 10;
 	this.count = 1;
 	if (type == 2)
-		this.moveLength = 2;
+		this.moveLength = 5;
 	this.Type = type;
 	this.bulletState = 1;
 	this.getPosX = function(){
@@ -441,7 +441,7 @@ function levelSystem(){
 		text = "等级："+currentLevel+"<br>"+"差"+(currentLevel - killEnemyCount)+"个升级<br>散弹<br>"+player.bulletType3+"<br>爆裂弹<br>"+player.bulletType1+"<br>";
 	}
 	else if(currentLevel >= 6){
-			text = "等级："+currentLevel+"<br>"+"差"+(currentLevel - killEnemyCount)+"个升级<br>散弹<br>"+player.bulletType3+"<br>爆裂弹<br>"+player.bulletType1+"<br>";
+			text = "等级："+currentLevel+"<br>"+"差"+(currentLevel - killEnemyCount)+"个升级<br>散弹<br>"+player.bulletType3+"<br>";
 	}
 	else{
 			text = "等级："+currentLevel+"<br>"+"差"+(currentLevel - killEnemyCount)+"个升级<br>";
@@ -760,7 +760,25 @@ function Play(){
 						//remove
 						// EnemyArr[ele].life -= player.harm;
 						$("#bullet"+elem).remove();
-						if(player.bulletType1){//爆裂弹效果
+						if (player.bulletType2) { //反弹爆裂弹效果
+							var changeDeg = 0.26;
+							var moveLength = 50;
+							var DX1, DX2, DY1, DY2, originDeg, DX, DY;
+							DX = BulletArr[elem].DirectX;
+							DY = BulletArr[elem].DirectY;
+							originDeg = Math.acos(BulletArr[elem].DirectX);
+							if (BulletArr[elem].DirectY < 0) {
+								originDeg = -originDeg;
+							}
+							DX1 = Math.cos(originDeg + changeDeg);
+							DX2 = Math.cos(originDeg - changeDeg);
+							DY1 = Math.sin(originDeg + changeDeg);
+							DY2 = Math.sin(originDeg - changeDeg);
+							bulletGenerate(BulletArr[elem].PosX - moveLength * DX, BulletArr[elem].PosY - moveLength * DY, -BulletArr[elem].DirectX, -BulletArr[elem].DirectY, 1);
+							bulletGenerate(BulletArr[elem].PosX - moveLength * DX, BulletArr[elem].PosY - moveLength * DY, -DX1, -DY1, 1);
+							bulletGenerate(BulletArr[elem].PosX - moveLength * DX, BulletArr[elem].PosY - moveLength * DY, -DX2, -DY2, 1);
+						}
+						else if(player.bulletType1){//爆裂弹效果
 							var changeDeg = 0.26;
 							var moveLength = 50;
 							var DX1,DX2,DY1,DY2,originDeg,DX,DY;
@@ -779,25 +797,6 @@ function Play(){
 							bulletGenerate(BulletArr[elem].PosX+moveLength*DX,BulletArr[elem].PosY + moveLength * DY,DX1,DY1,1);
 							bulletGenerate(BulletArr[elem].PosX+moveLength*DX,BulletArr[elem].PosY + moveLength * DY,DX2,DY2,1);
 
-						}
-						else if(player.bulletType2){//反弹爆裂弹效果
-							var changeDeg = 0.26;
-							var moveLength = 50;
-							var DX1,DX2,DY1,DY2,originDeg,DX,DY;
-							DX = BulletArr[elem].DirectX;
-							DY = BulletArr[elem].DirectY;
-							originDeg = Math.acos(BulletArr[elem].DirectX);
-							if(BulletArr[elem].DirectY < 0)
-							{
-								originDeg = -originDeg;
-							}
-							DX1 = Math.cos(originDeg + changeDeg);
-							DX2 = Math.cos(originDeg - changeDeg);
-							DY1 = Math.sin(originDeg + changeDeg);
-							DY2 = Math.sin(originDeg - changeDeg);
-							bulletGenerate(BulletArr[elem].PosX-moveLength*DX,BulletArr[elem].PosY - moveLength * DY,-BulletArr[elem].DirectX,-BulletArr[elem].DirectY,1);
-							bulletGenerate(BulletArr[elem].PosX-moveLength*DX,BulletArr[elem].PosY - moveLength * DY,-DX1,-DY1,1);
-							bulletGenerate(BulletArr[elem].PosX-moveLength*DX,BulletArr[elem].PosY - moveLength * DY,-DX2,-DY2,1);
 						}
 						delete BulletArr[elem];
 						EnemyArr[ele].life -= 50;
@@ -829,8 +828,9 @@ function Play(){
 		 				$("#player0_"+currentState).remove();
 		 				player_death_animation(0,PlayerArr[ele].positionMinx,PlayerArr[ele].positionMiny);
 		 				playDeath = true;
+
 		 				$("#hint").fadeIn('slow', function(){
-							$("#mainWrapper").fadeOut('slow');
+							//$("#mainWrapper").fadeOut('slow');
 						});
 		 				$("#death")[0].play();
 		 				delete PlayerArr[ele];
@@ -853,7 +853,7 @@ function Play(){
 					//alert(player.positionMinx);
 					player_death_animation(0,PlayerArr[ele].positionMinx,PlayerArr[ele].positionMiny);
 					$("#hint").css({display:'block'});
-		 			$("#mainWrapper").css({display:'none'});
+		 			//$("#mainWrapper").css({display:'none'});
 					$("#death")[0].play();
 					delete PlayerArr[ele];
 					}

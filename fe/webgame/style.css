@@ -45,6 +45,7 @@
 	font-weight: 900;
 	opacity: 0.8;
 	text-decoration: none;
+	z-index: 100;
 }
 
 #start{
@@ -89,6 +90,7 @@
 	margin: 0;
 	background-color: #222222;
 	display: none;
+	/*z-index: 20;*/
 }
 
 #playBox{
@@ -108,7 +110,7 @@
 	display: block;
 	width:100px;
 	background-color:#100100100;
-	left:50px;
+	left:575px;
 	top:50px;
 	border-width:1px;
 	border-style:solid;
