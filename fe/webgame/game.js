@@ -549,7 +549,7 @@ function Play(){
 
 	//每1秒：产生 enemy
 	var enemyGenerate = function(){
-		if(ResetGameState){return;}
+		if(playDeath){return;}
 		//clearInterval(ReEnemyGenerate);
 		mapWidth = parseInt(MapWidth);
 		mapHeight = parseInt(MapHeight);
@@ -672,7 +672,7 @@ function Play(){
 	//sx,sy初始位置
 	//dx,dy运行方向
 	var bulletGenerate = function(sx,sy,dx,dy,type){
-		if(ResetGameState){return;}
+		if(playDeath){return;}
 		var b = new class_Bullet(sx,sy,dx,dy, BulletTotal,type);
 		BulletArr.push(b);
 		if (type == 1)
@@ -864,7 +864,7 @@ function Play(){
 
 	//每0.2秒-检测出界：player（禁止出界） enemy（消除） bullet（消除）
 	var checkRange = function(){
-		if(ResetGameState){return;}
+		if(playDeath){return;}
 		//监测人物出界
 		// for(var elem in PlayerArr)
 		// {
