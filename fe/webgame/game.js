@@ -435,26 +435,26 @@ function levelSystem(){
 		LevelUpRemainder = true;
 	}
 	if(currentLevel >= 16){
-		text = "等级："+currentLevel+"<br>"+"差"+(currentLevel - killEnemyCount)+"个升级<br>散弹<br>"+player.bulletType3+"<br>爆裂弹<br>"+player.bulletType1+"<br>反弹爆裂弹<br>"+player.bulletType2+"<br>";
+		text = "Level："+currentLevel+"      "+"Rest_Enemies:"+(currentLevel - killEnemyCount);
 	}
 	else if(currentLevel >= 11){
-		text = "等级："+currentLevel+"<br>"+"差"+(currentLevel - killEnemyCount)+"个升级<br>散弹<br>"+player.bulletType3+"<br>爆裂弹<br>"+player.bulletType1+"<br>";
+		text = "Level："+currentLevel+"      "+"Rest_Enemies:"+(currentLevel - killEnemyCount);
 	}
 	else if(currentLevel >= 6){
-			text = "等级："+currentLevel+"<br>"+"差"+(currentLevel - killEnemyCount)+"个升级<br>散弹<br>"+player.bulletType3+"<br>";
+			text = "Level："+currentLevel+"      "+"Rest_Enemies:"+(currentLevel - killEnemyCount);
 	}
 	else{
-			text = "等级："+currentLevel+"<br>"+"差"+(currentLevel - killEnemyCount)+"个升级<br>";
+			text = "Level："+currentLevel+"      "+"Rest_Enemies:"+(currentLevel - killEnemyCount);
 	}
 	if(currentLevel == 6 && LevelUpRemainder)
 	{
 		LevelUpOnShow = true;
-		text = "恭喜你解锁散弹效果，按q键控制开关";
+		text = "You get new weapon! Press Q to Open/Close";
 		drawLevelBox(text);
 		$('#levelBox').fadeIn(1000);
 		LevelShow = true;
 		setTimeout(function() {
-			$('#levelBox').fadeOut(1000);
+			//$('#levelBox').fadeOut(1000);
 			LevelShow = false;
 			LevelUpOnShow = false;
 		},5000);
@@ -463,12 +463,12 @@ function levelSystem(){
 	} 
 	else if (currentLevel == 11 && LevelUpRemainder) {
 		LevelUpOnShow =true;
-		text = "恭喜你解锁爆裂弹弹效果，按e键控制开关";
+		text = "You get new weapon! Press E to Open/Close";
 		drawLevelBox(text);
 		$('#levelBox').fadeIn(1000);
 		LevelShow = true;
 		setTimeout(function() {
-			$('#levelBox').fadeOut(1000);
+			//$('#levelBox').fadeOut(1000);
 			LevelShow = false;
 			LevelUpOnShow = false;
 		},5000);
@@ -477,12 +477,12 @@ function levelSystem(){
 	} 
 	else if (currentLevel == 16 && LevelUpRemainder) {
 		LevelUpOnShow = true;
-		text = "恭喜你解锁反弹爆裂弹弹效果，按r键控制开关";
+		text = "You get new weapon! Press R to Open/Close";
 		drawLevelBox(text);
 		$('#levelBox').fadeIn(1000);
 		LevelShow = true;
 		setTimeout(function() {
-			$('#levelBox').fadeOut(1000);
+			//$('#levelBox').fadeOut(1000);
 			LevelShow = false;
 			LevelUpOnShow = false;
 		},5000);
