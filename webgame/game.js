@@ -850,7 +850,7 @@ function Play() {
 	RecheckRange = setInterval(checkRange, 500);
 
 	//每0.2秒-检测player方向改变：player:键盘方向键按下
-	setInterval(CheckKey, 100);
+	setInterval(CheckKey, 50);
 
 	//每0.05秒-检测player发射子弹：鼠标左键按下
 	var CheckMouse = function() {
